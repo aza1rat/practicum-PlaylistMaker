@@ -13,9 +13,11 @@
         android:padding="@dimen/header_outer_indent">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
             android:layout_margin="@dimen/header_inner_indent"
+            android:clickable="true"
             android:src="@drawable/ic_arrow_back_24" />
 
         <com.google.android.material.textview.MaterialTextView

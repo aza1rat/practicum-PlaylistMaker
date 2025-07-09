@@ -1,8 +1,8 @@
 package ru.aza1rat.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 
@@ -10,22 +10,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val search = findViewById<MaterialButton>(R.id.search)
-        val mediaLibrary = findViewById<MaterialButton>(R.id.media_library)
-        val settings = findViewById<MaterialButton>(R.id.settings)
-        search.setOnClickListener(object : View.OnClickListener {
+        val searchButton = findViewById<MaterialButton>(R.id.search)
+        val mediaLibraryButton = findViewById<MaterialButton>(R.id.media_library)
+        val settingsButton = findViewById<MaterialButton>(R.id.settings)
+        searchButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity,"Настройки | Через анонимный класс",
-                    Toast.LENGTH_LONG).show()
+                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
             }
         })
-        mediaLibrary.setOnClickListener {
-            Toast.makeText(this@MainActivity,"Медиатека | Через лямбду",
-                Toast.LENGTH_LONG).show()
+        mediaLibraryButton.setOnClickListener {
+            startActivity(Intent(this@MainActivity, MediaLibraryActivity::class.java))
         }
-        settings.setOnClickListener {
-            Toast.makeText(this@MainActivity,"Настройки | Через лямбду",
-                Toast.LENGTH_LONG).show()
+        settingsButton.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
         }
     }
 }
