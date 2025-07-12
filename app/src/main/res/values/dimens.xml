@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="header_outer_indent">4dp</dimen>
+    <dimen name="header_inner_top_indent">10dp</dimen>
+    <dimen name="header_inner_indent">12dp</dimen>
+    <dimen name="main_button_margin">16dp</dimen>
+    <dimen name="main_button_corner_radius">16dp</dimen>
+    <dimen name="main_button_icon_padding">8dp</dimen>
+    <dimen name="main_text_size">22sp</dimen>
+    <dimen name="header_space">24dp</dimen>
+    <dimen name="settings_indent_start">16dp</dimen>
+    <dimen name="settings_switch_indent">21dp</dimen>
+    <dimen name="settings_switch_indent_end">18dp</dimen>
+    <dimen name="settings_icon_text_indent_top">19dp</dimen>
+    <dimen name="settings_icon_text_indent_bottom">18dp</dimen>
+    <dimen name="settings_icon_text_indent_end">12dp</dimen>
+    <dimen name="settings_text_size">16sp</dimen>
+</resources>
