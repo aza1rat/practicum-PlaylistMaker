@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BaseButtonUnelevated" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="BaseTextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="DayNightButtonDrawableTint" parent="BaseButtonUnelevated">
+        <item name="android:drawableTint">@color/text_gray</item>
+    </style>
+
+    <style name="HeaderFrameLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/header_outer_indent</item>
+    </style>
+
+    <style name="HeaderBackImageView">
+        <item name="android:layout_width">@dimen/icon_size</item>
+        <item name="android:layout_height">@dimen/icon_size</item>
+        <item name="android:layout_margin">@dimen/header_inner_indent</item>
+        <item name="android:clickable">true</item>
+        <item name="tint">?attr/colorOnPrimary</item>
+        <item name="android:src">@drawable/ic_arrow_back_24</item>
+    </style>
+
+    <style name="HeaderTextView" parent="TitleTextView">
+        <item name="android:layout_marginStart">@dimen/header_text_indent</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="MainLayoutBackground">
+        <item name="android:background">@color/blue</item>
+    </style>
+
+    <style name="MainButton" parent="BaseButtonUnelevated">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginLeft">@dimen/main_button_margin</item>
+        <item name="android:layout_marginTop">@dimen/main_button_margin</item>
+        <item name="android:layout_marginRight">@dimen/main_button_margin</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textSize">@dimen/main_text_size</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="cornerRadius">@dimen/main_button_corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/icon_content_padding</item>
+        <item name="iconSize">@dimen/icon_size</item>
+        <item name="iconTint">@color/yp_black</item>
+    </style>
+
+    <style name="TitleTextView" parent="BaseTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:paddingTop">@dimen/header_inner_top_indent</item>
+        <item name="android:paddingBottom">@dimen/header_inner_indent</item>
+        <item name="android:textSize">@dimen/main_text_size</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="SettingsButton" parent="DayNightButtonDrawableTint">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:paddingStart">@dimen/settings_indent_start</item>
+        <item name="android:paddingTop">@dimen/settings_icon_text_indent_top</item>
+        <item name="android:paddingEnd">@dimen/settings_icon_text_indent_end</item>
+        <item name="android:paddingBottom">@dimen/settings_icon_text_indent_bottom</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/regular_text_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="background">@null</item>
+        <item name="cornerRadius">0dp</item>
+
+    </style>
+
+    <style name="SettingsSwitchDayNight" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="trackTint">@color/light_gray</item>
+        <item name="thumbTint">@color/text_gray</item>
+    </style>
+</resources>
