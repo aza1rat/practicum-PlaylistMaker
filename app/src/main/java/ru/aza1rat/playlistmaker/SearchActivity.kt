@@ -22,7 +22,7 @@ class SearchActivity : AppCompatActivity() {
         searchTextEdit = findViewById(R.id.search)
         clearImageView.setOnClickListener {
             searchTextEdit.text.clear()
-            hideFocus(searchTextEdit)
+            hideKeyboard(searchTextEdit)
         }
         searchTextEdit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideFocus(view: View) {
+    private fun hideKeyboard(view: View) {
         (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).apply {
             this.hideSoftInputFromWindow(view.windowToken, 0)
         }
