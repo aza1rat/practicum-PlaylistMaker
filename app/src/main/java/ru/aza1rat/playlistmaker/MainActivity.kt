@@ -2,7 +2,6 @@ package ru.aza1rat.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 
@@ -11,11 +10,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val searchButton = findViewById<MaterialButton>(R.id.search)
-        searchButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
-            }
-        })
+        searchButton.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+        }
         val mediaLibraryButton = findViewById<MaterialButton>(R.id.media_library)
         mediaLibraryButton.setOnClickListener {
             startActivity(Intent(this@MainActivity, MediaLibraryActivity::class.java))

@@ -3,38 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
     tools:context=".SettingsActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/header_outer_indent">
+    <FrameLayout style="@style/HeaderFrameLayout">
 
         <ImageView
             android:id="@+id/back"
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_margin="@dimen/header_inner_indent"
-            android:clickable="true"
-            android:src="@drawable/ic_arrow_back_24" />
+            style="@style/HeaderBackImageView" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="center_vertical"
-            android:paddingTop="@dimen/header_inner_top_indent"
-            android:paddingBottom="@dimen/header_inner_indent"
-            android:text="@string/settings"
-            android:textAllCaps="false"
-            android:textColor="@color/yp_black"
-            android:textSize="@dimen/main_text_size" />
+            style="@style/HeaderTextView"
+            android:text="@string/settings" />
     </FrameLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/SettingsSwitchDayNight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/header_space"
@@ -45,55 +31,27 @@
         android:paddingEnd="@dimen/settings_switch_indent_end"
         android:paddingBottom="@dimen/settings_switch_indent"
         android:text="@string/black_theme"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_text_size"
-        app:thumbIconSize="18dp"
-        app:thumbTint="@color/text_gray"
-        app:trackTint="@color/light_gray" />
+        android:textColor="?attr/colorOnPrimary"
+        android:textFontWeight="400"
+        android:textSize="@dimen/regular_text_size"
+        app:thumbIconSize="18dp" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_display_regular"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/settings_indent_start"
-        android:paddingTop="@dimen/settings_icon_text_indent_top"
-        android:paddingEnd="@dimen/settings_icon_text_indent_end"
-        android:paddingBottom="@dimen/settings_icon_text_indent_bottom"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/share"
+        style="@style/SettingsButton"
         android:text="@string/share_app"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_text_size"
-        app:drawableRightCompat="@drawable/ic_share_24"
-        app:drawableTint="@color/text_gray" />
+        app:drawableRightCompat="@drawable/ic_share_24" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_display_regular"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/settings_indent_start"
-        android:paddingTop="@dimen/settings_icon_text_indent_top"
-        android:paddingEnd="@dimen/settings_icon_text_indent_end"
-        android:paddingBottom="@dimen/settings_icon_text_indent_bottom"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/messageSupport"
+        style="@style/SettingsButton"
         android:text="@string/message_to_support"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_text_size"
-        app:drawableEndCompat="@drawable/ic_support_24"
-        app:drawableTint="@color/text_gray" />
+        app:drawableEndCompat="@drawable/ic_support_24" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_display_regular"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/settings_indent_start"
-        android:paddingTop="@dimen/settings_icon_text_indent_top"
-        android:paddingEnd="@dimen/settings_icon_text_indent_end"
-        android:paddingBottom="@dimen/settings_icon_text_indent_bottom"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/userAgreement"
+        style="@style/SettingsButton"
         android:text="@string/user_agreement"
-        android:textColor="@color/black"
-        android:textSize="@dimen/settings_text_size"
-        app:drawableEndCompat="@drawable/ic_arrow_forward_24"
-        app:drawableTint="@color/text_gray" />
+        app:drawableEndCompat="@drawable/ic_arrow_forward_24" />
 
 </LinearLayout>

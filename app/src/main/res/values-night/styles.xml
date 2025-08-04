@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainLayoutBackground">
+        <item name="android:background">@color/yp_black</item>
+    </style>
+    <style name="DayNightButtonDrawableTint" parent="BaseButtonUnelevated">
+        <item name="android:drawableTint">@color/white</item>
+    </style>
+    <style name="SettingsSwitchDayNight" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="trackTint">@color/blue_light</item>
+        <item name="thumbTint">@color/blue</item>
+    </style>
+</resources>

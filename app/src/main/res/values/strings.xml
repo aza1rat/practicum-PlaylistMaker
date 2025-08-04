@@ -7,4 +7,9 @@
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="search">Поиск</string>
     <string name="media_library">Медиатека</string>
+    <string name="share_app_message">Я учусь здесь: https://practicum.yandex.ru/android-developer/?from=catalog</string>
+    <string name="author_email">artemkashityn193@gmail.com</string>
+    <string name="email_support_title">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="email_support_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="link_user_agreement">https://yandex.ru/legal/practicum_offer/</string>
 </resources>
