@@ -6,6 +6,12 @@
     <style name="DayNightButtonDrawableTint" parent="BaseButtonUnelevated">
         <item name="android:drawableTint">@color/white</item>
     </style>
+    <style name="DayNightTextColor" parent="BaseTextView">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="DayNightTint">
+        <item name="android:tint">@color/white</item>
+    </style>
     <style name="SettingsSwitchDayNight" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="trackTint">@color/blue_light</item>
         <item name="thumbTint">@color/blue</item>
