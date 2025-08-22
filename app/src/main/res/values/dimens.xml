@@ -18,4 +18,11 @@
     <dimen name="settings_icon_text_indent_bottom">18dp</dimen>
     <dimen name="settings_icon_text_indent_end">12dp</dimen>
     <dimen name="regular_text_size">16sp</dimen>
+    <dimen name="search_track_image_size">45dp</dimen>
+    <dimen name="search_track_text_start_indent">54dp</dimen>
+    <dimen name="search_track_text_end_indent">32dp</dimen>
+    <dimen name="search_track_info_text_size">11sp</dimen>
+    <dimen name="search_track_info_dot_size">13dp</dimen>
+    <dimen name="search_track_inner_indent_horizontal">12dp</dimen>
+    <dimen name="search_track_inner_indent_vertical">8dp</dimen>
 </resources>

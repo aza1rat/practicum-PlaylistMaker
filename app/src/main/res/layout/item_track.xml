@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/search_track_inner_indent_horizontal"
+    android:paddingVertical="@dimen/search_track_inner_indent_vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/trackArtwork"
+        android:layout_width="@dimen/search_track_image_size"
+        android:layout_height="@dimen/search_track_image_size"
+        android:layout_gravity="start"
+        android:layout_marginStart="1dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@style/BaseRounded"
+        tools:src="@drawable/ph_track_45" />
+
+    <TextView
+        android:id="@+id/trackName"
+        style="@style/SearchTrackTextView"
+        android:layout_marginStart="@dimen/search_track_text_start_indent"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="@dimen/search_track_text_end_indent"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="@dimen/regular_text_size"
+        tools:text="Here Comes The Sun (Remastered ver)" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/search_track_text_start_indent"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="@dimen/search_track_text_end_indent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/trackArtist"
+            style="@style/SearchTrackTextView"
+            android:layout_width="0dp"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            tools:text="The Beatles__________________________________________" />
+
+        <ImageView
+            style="@style/DayNightTint"
+            android:layout_width="@dimen/search_track_info_dot_size"
+            android:layout_height="@dimen/search_track_info_dot_size"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_dot_13" />
+
+        <TextView
+            android:id="@+id/trackTime"
+            style="@style/SearchTrackTextView"
+            android:layout_gravity="end"
+            tools:text="4:01" />
+
+    </LinearLayout>
+
+    <ImageView
+        style="@style/DayNightTint"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_arrow_forward_24" />
+
+</FrameLayout>
