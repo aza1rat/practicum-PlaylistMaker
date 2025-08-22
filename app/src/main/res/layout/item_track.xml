@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="12dp"
-    android:paddingVertical="8dp">
+    android:paddingHorizontal="@dimen/search_track_inner_indent_horizontal"
+    android:paddingVertical="@dimen/search_track_inner_indent_vertical">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/trackArtwork"
