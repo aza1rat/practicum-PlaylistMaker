@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/search_track_inner_indent_horizontal"
-    android:paddingVertical="@dimen/search_track_inner_indent_vertical">
+    android:paddingVertical="@dimen/search_track_inner_indent_vertical"
+    android:clickable="true">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/trackArtwork"
@@ -38,10 +39,10 @@
         <TextView
             android:id="@+id/trackArtist"
             style="@style/SearchTrackTextView"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
-            tools:text="The Beatles__________________________________________" />
+            tools:text="The Beatles_________________________________________________________" />
 
         <ImageView
             style="@style/DayNightTint"

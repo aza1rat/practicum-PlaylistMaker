@@ -17,7 +17,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         nameTextView.text = track.trackName
         artistTextView.text = track.artistName
-        timeTextView.text = track.trackTime
+        timeTextView.text = track.formatTrackTime()
         Glide.with(itemView).load(track.artworkUrl100)
             .placeholder(R.drawable.ph_track_45)
             .into(artworkImageView)
