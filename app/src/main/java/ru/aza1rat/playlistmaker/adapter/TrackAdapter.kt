@@ -7,7 +7,9 @@ import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.data.Track
 import ru.aza1rat.playlistmaker.viewHolder.TrackViewHolder
 
-class TrackAdapter(private val trackList: MutableList<Track>) : RecyclerView.Adapter<TrackViewHolder>(){
+class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>(){
+    var trackList: List<Track> = listOf()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

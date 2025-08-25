@@ -29,6 +29,14 @@
         <item name="android:tint">@color/text_gray</item>
     </style>
 
+    <style name="DayNightSearchEmptyImageView" parent="SearchIllustrationImageView">
+        <item name="android:src">@drawable/il_search_empty_light_120</item>
+    </style>
+
+    <style name="DayNightSearchNoInternetImageView" parent="SearchIllustrationImageView">
+        <item name="android:src">@drawable/il_no_internet_light_120</item>
+    </style>
+
     <style name="HeaderFrameLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -112,5 +120,42 @@
         <item name="android:maxLines">1</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/search_track_info_text_size</item>
+    </style>
+
+    <style name="SearchErrorFrameLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">100dp</item>
+    </style>
+
+    <style name="SearchIllustrationImageView">
+        <item name="android:layout_width">@dimen/search_illustration_size</item>
+        <item name="android:layout_height">@dimen/search_illustration_size</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+
+    <style name="SearchErrorTextView" parent="BaseTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingHorizontal">24dp</item>
+        <item name="android:paddingTop">138dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">19sp</item>
+        <item name="fontWeight">400</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="SearchRefreshButton" parent="BaseButtonUnelevated">
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">14sp</item>
+
     </style>
 </resources>
