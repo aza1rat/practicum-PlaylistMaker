@@ -104,11 +104,12 @@ class SearchActivity : AppCompatActivity() {
             override fun onResponse(
                 call: Call<TrackResponse>, response: Response<TrackResponse>
             ) {
-                if (response.code() == 200) {
-                    if (response.body()?.results == null || response.body()?.results!!.isEmpty())
+                if (response.isSuccessful) {
+                    val results = response.body()?.results
+                    if (results.isNullOrEmpty())
                         showMainView(searchEmptyLayout)
                     else {
-                        trackAdapter.trackList = response.body()?.results!!
+                        trackAdapter.trackList = results
                         trackAdapter.notifyDataSetChanged()
                         showMainView(tracksRecycler)
                     }
