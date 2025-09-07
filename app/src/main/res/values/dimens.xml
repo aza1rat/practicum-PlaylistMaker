@@ -27,4 +27,6 @@
     <dimen name="search_track_inner_indent_vertical">8dp</dimen>
     <dimen name="search_refresh_padding">6dp</dimen>
     <dimen name="search_illustration_size">120dp</dimen>
+    <dimen name="search_space">24dp</dimen>
+    <dimen name="search_indent_vertical">16dp</dimen>
 </resources>

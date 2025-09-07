@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,12 @@ class SettingsActivity : AppCompatActivity() {
                 setData(getString(R.string.link_user_agreement).toUri())
                 startActivity(this)
             }
+        }
+        val themeSwitch = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        val appContext = applicationContext as App
+        themeSwitch.isChecked = appContext.darkTheme
+        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            appContext.switchTheme(isChecked)
         }
         val backButton = findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener { finish() }

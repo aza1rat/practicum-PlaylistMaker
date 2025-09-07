@@ -7,7 +7,11 @@ import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.data.Track
 import ru.aza1rat.playlistmaker.viewHolder.TrackViewHolder
 
-class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>(){
+class TrackAdapter(private val onTrackClickListener: OnTrackClickListener? = null) : RecyclerView.Adapter<TrackViewHolder>(){
+    fun interface OnTrackClickListener{
+        fun onTrackClick(track: Track)
+    }
+
     var trackList: List<Track> = listOf()
 
     override fun onCreateViewHolder(
@@ -23,6 +27,9 @@ class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>(){
         position: Int
     ) {
         holder.bind(trackList[position])
+        holder.itemView.setOnClickListener{
+            onTrackClickListener?.onTrackClick(trackList[position])
+        }
     }
 
     override fun getItemCount(): Int = trackList.size

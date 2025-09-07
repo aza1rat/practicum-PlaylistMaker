@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         searchButton.setOnClickListener {
             startActivity(Intent(this@MainActivity, SearchActivity::class.java))
         }
-        val mediaLibraryButton = findViewById<MaterialButton>(R.id.media_library)
+        val mediaLibraryButton = findViewById<MaterialButton>(R.id.mediaLibrary)
         mediaLibraryButton.setOnClickListener {
             startActivity(Intent(this@MainActivity, MediaLibraryActivity::class.java))
         }
