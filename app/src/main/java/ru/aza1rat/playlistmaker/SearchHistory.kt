@@ -10,7 +10,7 @@ import ru.aza1rat.playlistmaker.adapter.TrackAdapter
 class SearchHistory(
     private val sharedPrefs: SharedPreferences, private val adapter: TrackAdapter
 ) {
-    val tracksHistory: ArrayList<Track>
+    private val tracksHistory: ArrayList<Track>
     private val gson = Gson()
 
     init {
@@ -46,6 +46,8 @@ class SearchHistory(
         tracksHistory.clear()
         adapter.notifyItemRangeRemoved(0, tracksCount)
     }
+
+    fun getHistory() = tracksHistory
 
     companion object {
         private const val SEARCH_HISTORY_KEY = "search_history_json"

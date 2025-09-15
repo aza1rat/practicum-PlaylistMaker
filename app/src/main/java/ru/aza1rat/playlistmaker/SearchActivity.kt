@@ -45,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
                 App.SHARED_PREFERENCES_NAME, MODE_PRIVATE
             ), searchHistoryAdapter
         )
-        searchHistoryAdapter.trackList = searchHistory.tracksHistory
+        searchHistoryAdapter.trackList = searchHistory.getHistory()
 
         val historyTracksRecycler = findViewById<RecyclerView>(R.id.historyTracks)
         historyTracksRecycler.adapter = searchHistoryAdapter
@@ -68,8 +68,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchTextEdit = findViewById<EditText>(R.id.search)
-        searchTextEdit.setOnEditorActionListener(initOnEditorActionListener(trackAdapter))
-        searchTextEdit.onFocusChangeListener = initOnFocusChangeListener(searchHistory)
+        searchTextEdit.setOnEditorActionListener(createOnEditorActionListener(trackAdapter))
+        searchTextEdit.onFocusChangeListener = createOnFocusChangeListener(searchHistory)
 
         val clearSearchImageView = findViewById<ImageView>(R.id.clearSearch)
         clearSearchImageView.setOnClickListener {
@@ -77,7 +77,7 @@ class SearchActivity : AppCompatActivity() {
             hideKeyboard(searchTextEdit)
             showMainView(null)
         }
-        searchTextEdit.addTextChangedListener(initTextWatcher(searchHistory, clearSearchImageView))
+        searchTextEdit.addTextChangedListener(createTextWatcher(searchHistory, clearSearchImageView))
         val backImageView = findViewById<ImageView>(R.id.back)
         backImageView.setOnClickListener { finish() }
     }
@@ -102,7 +102,7 @@ class SearchActivity : AppCompatActivity() {
         view.clearFocus()
     }
 
-    private fun initTextWatcher(
+    private fun createTextWatcher(
         searchHistory: SearchHistory,
         clearSearchImageView: ImageView,
     ): TextWatcher {
@@ -111,7 +111,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty() && searchTextEdit.hasFocus() && searchHistory.tracksHistory.isNotEmpty()) {
+                if (s.isNullOrEmpty() && searchTextEdit.hasFocus() && searchHistory.getHistory().isNotEmpty()) {
                     showMainView(searchHistoryLayout)
                 } else searchHistoryLayout.isVisible = false
             }
@@ -124,7 +124,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initOnEditorActionListener(trackAdapter: TrackAdapter): OnEditorActionListener {
+    private fun createOnEditorActionListener(trackAdapter: TrackAdapter): OnEditorActionListener {
         return OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchRequest(searchValue, trackAdapter)
@@ -134,10 +134,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initOnFocusChangeListener(searchHistory: SearchHistory): OnFocusChangeListener {
+    private fun createOnFocusChangeListener(searchHistory: SearchHistory): OnFocusChangeListener {
         return OnFocusChangeListener { view, hasFocus ->
             val searchTextEdit: EditText = view as EditText
-            if (hasFocus && searchTextEdit.text.isNullOrEmpty() && searchHistory.tracksHistory.isNotEmpty()) {
+            if (hasFocus && searchTextEdit.text.isNullOrEmpty() && searchHistory.getHistory().isNotEmpty()) {
                 showMainView(searchHistoryLayout)
             } else searchHistoryLayout.isVisible = false
         }

@@ -8,6 +8,7 @@ import androidx.core.content.edit
 class App : Application() {
 
     var darkTheme = false
+        private set
 
     private fun currentThemeIsDark(): Boolean {
         return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
