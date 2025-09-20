@@ -2,7 +2,7 @@ package ru.aza1rat.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.button.MaterialButton
@@ -43,7 +43,7 @@ class SettingsActivity : AppCompatActivity() {
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             appContext.switchTheme(isChecked)
         }
-        val backButton = findViewById<ImageView>(R.id.back)
-        backButton.setOnClickListener { finish() }
+        val backImageButton = findViewById<ImageButton>(R.id.back)
+        backImageButton.setOnClickListener { finish() }
     }
 }

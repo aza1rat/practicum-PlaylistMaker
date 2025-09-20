@@ -29,4 +29,12 @@
     <dimen name="search_illustration_size">120dp</dimen>
     <dimen name="search_space">24dp</dimen>
     <dimen name="search_indent_vertical">16dp</dimen>
+    <dimen name="player_indent">24dp</dimen>
+    <dimen name="player_indent_bottom">20dp</dimen>
+    <dimen name="player_info_indent">16dp</dimen>
+    <dimen name="player_space">30dp</dimen>
+    <dimen name="player_control_indent_top">54dp</dimen>
+    <dimen name="player_subtext_size">14sp</dimen>
+    <dimen name="player_favorite_padding">13dp</dimen>
+    <dimen name="player_favorite_padding_top">15dp</dimen>
 </resources>

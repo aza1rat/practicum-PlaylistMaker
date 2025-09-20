@@ -37,19 +37,28 @@
         <item name="android:src">@drawable/il_no_internet_light_120</item>
     </style>
 
+    <style name="DayNightPlayerControlImageButton" parent="PlayerControlImageButton">
+        <item name="android:backgroundTint">@color/yp_black_25a</item>
+    </style>
+
+    <style name="DayNightPlayerPlayImageButton" parent="PlayerControlImageButton">
+        <item name="android:src">@drawable/ic_play_light_84</item>
+    </style>
+
     <style name="HeaderFrameLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">@dimen/header_outer_indent</item>
     </style>
 
-    <style name="HeaderBackImageView">
-        <item name="android:layout_width">@dimen/icon_size</item>
-        <item name="android:layout_height">@dimen/icon_size</item>
-        <item name="android:layout_margin">@dimen/header_inner_indent</item>
+    <style name="HeaderBackImageButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/header_inner_indent</item>
         <item name="android:clickable">true</item>
         <item name="tint">?attr/colorOnPrimary</item>
         <item name="android:src">@drawable/ic_arrow_back_24</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
     </style>
 
     <style name="HeaderTextView" parent="TitleTextView">
@@ -170,5 +179,47 @@
         <item name="android:backgroundTint">?attr/colorOnPrimary</item>
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="cornerRadius">54dp</item>
+    </style>
+
+    <style name="PlayerCoverRounded" parent="BaseRounded">
+        <item name="cornerRadius">8dp</item>
+    </style>
+    
+    <style name="PlayerMainTextView" parent="BaseTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="PlayerRegularTitleTextView" parent="BaseTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="PlayerRegularValueTextView" parent="PlayerRegularTitleTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_marginStart">@dimen/player_info_indent</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="layout_constraintWidth">wrap_content_constrained</item>
+        <item name="layout_constraintHorizontal_bias">1</item>
+    </style>
+
+    <style name="PlayerControlImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_oval</item>
+        <item name="layout_constraintDimensionRatio">w,1:1</item>
     </style>
 </resources>

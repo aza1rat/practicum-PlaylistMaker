@@ -10,9 +10,9 @@
 
     <FrameLayout style="@style/HeaderFrameLayout">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/back"
-            style="@style/HeaderBackImageView" />
+            style="@style/HeaderBackImageButton" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/HeaderTextView"

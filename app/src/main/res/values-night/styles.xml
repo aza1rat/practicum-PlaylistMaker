@@ -23,4 +23,12 @@
     <style name="DayNightSearchNoInternetImageView" parent="SearchIllustrationImageView">
         <item name="android:src">@drawable/il_no_internet_dark_120</item>
     </style>
+
+    <style name="DayNightPlayerControlImageButton" parent="PlayerControlImageButton">
+        <item name="android:backgroundTint">@color/white_25a</item>
+    </style>
+
+    <style name="DayNightPlayerPlayImageButton" parent="PlayerControlImageButton">
+        <item name="android:src">@drawable/ic_play_dark_84</item>
+    </style>
 </resources>
