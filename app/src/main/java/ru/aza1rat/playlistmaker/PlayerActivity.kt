@@ -19,37 +19,29 @@ class PlayerActivity : AppCompatActivity() {
             finish()
             return
         }
-        findViewById<MaterialTextView>(R.id.trackName).apply {
-            this.text = track.trackName
-        }
-        findViewById<MaterialTextView>(R.id.trackArtist).apply {
-            this.text = track.artistName
-        }
-        findViewById<MaterialTextView>(R.id.duration).apply {
-            this.text = track.formatTrackTime()
-        }
+        val trackNameTextView = findViewById<MaterialTextView>(R.id.trackName)
+        trackNameTextView.text = track.trackName
+         val trackArtistTextView = findViewById<MaterialTextView>(R.id.trackArtist)
+         trackArtistTextView.text = track.artistName
+        val durationTextView = findViewById<MaterialTextView>(R.id.duration)
+        durationTextView.text = track.formatTrackTime()
         val albumGroup = findViewById<Group>(R.id.albumGroup)
-        findViewById<MaterialTextView>(R.id.album).apply {
-            if (!hideGroupWhenNullValue(albumGroup,track.collectionName))
-                this.text = track.collectionName
-        }
+        val albumTextView = findViewById<MaterialTextView>(R.id.album)
+        if (!hideGroupWhenNullValue(albumGroup,track.collectionName))
+            albumTextView.text = track.collectionName
         val yearGroup = findViewById<Group>(R.id.yearGroup)
-        findViewById<MaterialTextView>(R.id.year).apply {
-            val releaseYear = track.getReleaseYear()
-            if (!hideGroupWhenNullValue(yearGroup,releaseYear))
-                this.text = releaseYear
-        }
-        findViewById<MaterialTextView>(R.id.genre).apply {
-            this.text = track.primaryGenreName
-        }
-        findViewById<MaterialTextView>(R.id.country).apply {
-            this.text = track.country
-        }
+        val yearTextView = findViewById<MaterialTextView>(R.id.year)
+        val releaseYear = track.getReleaseYear()
+        if (!hideGroupWhenNullValue(yearGroup,releaseYear))
+            yearTextView.text = releaseYear
+        val genreTextView = findViewById<MaterialTextView>(R.id.genre)
+        genreTextView.text = track.primaryGenreName
+        val countryTextView = findViewById<MaterialTextView>(R.id.country)
+        countryTextView.text = track.country
         val coverImageView = findViewById<ImageView>(R.id.cover)
         Glide.with(this).load(track.getArtworkUrl512())
             .placeholder(R.drawable.ph_track_45)
             .into(coverImageView)
-
         val backImageButton = findViewById<ImageButton>(R.id.back)
         backImageButton.setOnClickListener { finish() }
     }
