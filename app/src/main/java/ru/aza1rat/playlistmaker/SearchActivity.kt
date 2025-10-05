@@ -1,6 +1,7 @@
 package ru.aza1rat.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView.OnEditorActionListener
@@ -39,7 +41,12 @@ class SearchActivity : AppCompatActivity() {
         noInternetLayout = findViewById(R.id.noInternet)
         searchHistoryLayout = findViewById(R.id.searchHistory)
 
-        val searchHistoryAdapter = TrackAdapter()
+        val searchHistoryAdapter = TrackAdapter { track ->
+            Intent(this@SearchActivity, PlayerActivity::class.java).apply {
+                this.putExtra(PlayerActivity.INTENT_TRACK_EXTRA_KEY,track)
+                startActivity(this)
+            }
+        }
         val searchHistory = SearchHistory(
             getSharedPreferences(
                 App.SHARED_PREFERENCES_NAME, MODE_PRIVATE
@@ -59,6 +66,10 @@ class SearchActivity : AppCompatActivity() {
         val trackAdapter = TrackAdapter { track ->
             searchHistory.add(track)
             historyTracksRecycler.layoutManager?.scrollToPosition(0)
+            Intent(this@SearchActivity,PlayerActivity::class.java).apply {
+                this.putExtra(PlayerActivity.INTENT_TRACK_EXTRA_KEY,track)
+                startActivity(this)
+            }
         }
         tracksRecycler = findViewById<RecyclerView>(R.id.tracks)
         tracksRecycler.adapter = trackAdapter
@@ -78,8 +89,8 @@ class SearchActivity : AppCompatActivity() {
             showMainView(null)
         }
         searchTextEdit.addTextChangedListener(createTextWatcher(searchHistory, clearSearchImageView))
-        val backImageView = findViewById<ImageView>(R.id.back)
-        backImageView.setOnClickListener { finish() }
+        val backImageButton= findViewById<ImageButton>(R.id.back)
+        backImageButton.setOnClickListener { finish() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
