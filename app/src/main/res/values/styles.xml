@@ -41,10 +41,6 @@
         <item name="android:backgroundTint">@color/yp_black_25a</item>
     </style>
 
-    <style name="DayNightPlayerPlayImageButton" parent="PlayerControlImageButton">
-        <item name="android:src">@drawable/ic_play_light_84</item>
-    </style>
-
     <style name="HeaderFrameLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

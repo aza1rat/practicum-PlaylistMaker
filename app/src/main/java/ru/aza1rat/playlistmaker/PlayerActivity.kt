@@ -1,6 +1,9 @@
 package ru.aza1rat.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +12,28 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
 import ru.aza1rat.playlistmaker.data.Track
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+    private var playerState = PLAYER_STATE_DEFAULT
+    private val mediaPlayer = MediaPlayer()
+    private val progressFormatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+    private val handler = Handler(Looper.getMainLooper())
+    private val progressCheckTask = object : Runnable {
+        override fun run() {
+            if (::progressPlayingTextView.isInitialized && !isFinishing && !isDestroyed) {
+                progressPlayingTextView.text = progressFormatter.format(mediaPlayer.currentPosition)
+                if (playerState == PLAYER_STATE_PLAYING) {
+                    handler.postDelayed(this, PROGRESS_CHECK_DELAY)
+                }
+            }
+        }
+    }
+
+    private lateinit var playButton: ImageButton
+    private lateinit var progressPlayingTextView: MaterialTextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -18,6 +41,16 @@ class PlayerActivity : AppCompatActivity() {
         if (track == null) {
             finish()
             return
+        }
+        progressPlayingTextView = findViewById(R.id.progressPlaying)
+        playButton = findViewById(R.id.play)
+        playButton.isEnabled = false
+        preparePlayer(track)
+        playButton.setOnClickListener {
+            when (playerState) {
+                PLAYER_STATE_PLAYING -> pausePlayer()
+                PLAYER_STATE_PREPARED,PLAYER_STATE_PAUSED -> startPlayer()
+            }
         }
         val trackNameTextView = findViewById<MaterialTextView>(R.id.trackName)
         trackNameTextView.text = track.trackName
@@ -46,12 +79,59 @@ class PlayerActivity : AppCompatActivity() {
         backImageButton.setOnClickListener { finish() }
     }
 
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        mediaPlayer.release()
+        super.onDestroy()
+    }
+
     private fun hideGroupWhenNullValue(group: Group,value: String?): Boolean {
         group.isVisible = value != null
         return !group.isVisible
     }
 
+
+    private fun preparePlayer(track: Track) {
+        mediaPlayer.setOnPreparedListener {
+            playerState = PLAYER_STATE_PREPARED
+            playButton.isEnabled = true
+        }
+        mediaPlayer.setOnCompletionListener {
+            playerState = PLAYER_STATE_PREPARED
+            playButton.setImageResource(R.drawable.ic_play_84)
+            handler.removeCallbacks(progressCheckTask)
+            progressPlayingTextView.text = getString(R.string.placeholder_progress_playing)
+        }
+        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.prepareAsync()
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playerState = PLAYER_STATE_PLAYING
+        playButton.setImageResource(R.drawable.ic_pause_84)
+        handler.postDelayed(progressCheckTask, PROGRESS_CHECK_DELAY)
+    }
+
+    private fun pausePlayer() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            playerState = PLAYER_STATE_PAUSED
+            playButton.setImageResource(R.drawable.ic_play_84)
+            handler.removeCallbacks(progressCheckTask)
+        }
+    }
+
     companion object {
         const val INTENT_TRACK_EXTRA_KEY = "TRACK"
+        private const val PROGRESS_CHECK_DELAY = 400L
+        private const val PLAYER_STATE_DEFAULT = 0
+        private const val PLAYER_STATE_PREPARED = 1
+        private const val PLAYER_STATE_PLAYING = 2
+        private const val PLAYER_STATE_PAUSED = 3
     }
 }

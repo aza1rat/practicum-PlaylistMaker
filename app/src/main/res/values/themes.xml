@@ -6,6 +6,7 @@
         <item name="colorSecondary">@color/light_gray</item>
         <item name="colorOnSecondary">@color/text_gray</item>
         <item name="colorAccent">@color/blue</item>
+        <item name="colorPlayButton">@color/yp_black</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
