@@ -96,7 +96,10 @@
 
         <ImageButton
             android:id="@+id/play"
-            style="@style/DayNightPlayerPlayImageButton"
+            style="@style/PlayerControlImageButton"
+            android:src="@drawable/ic_play_84"
+            app:tint="?attr/colorPlayButton"
+            android:clickable="true"
             android:layout_marginTop="@dimen/player_space"
             android:padding="@dimen/icon_content_padding"
             app:layout_constraintEnd_toStartOf="@id/favorite"
