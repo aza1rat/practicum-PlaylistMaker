@@ -104,9 +104,9 @@ class SearchActivity : AppCompatActivity() {
         backImageButton.setOnClickListener { finish() }
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         handler.removeCallbacks(sendRequestTask)
-        super.onStop()
+        super.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
