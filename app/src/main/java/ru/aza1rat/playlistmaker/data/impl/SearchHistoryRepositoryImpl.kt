@@ -1,0 +1,52 @@
+package ru.aza1rat.playlistmaker.data.impl
+
+import android.content.SharedPreferences
+import androidx.core.content.edit
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import ru.aza1rat.playlistmaker.data.dto.TrackDto
+import ru.aza1rat.playlistmaker.data.storage.SharedPrefStorage
+import ru.aza1rat.playlistmaker.domain.api.SearchHistoryRepository
+import ru.aza1rat.playlistmaker.domain.model.Track
+
+class SearchHistoryRepositoryImpl (
+    private val sharedPrefStorage: SharedPrefStorage
+): SearchHistoryRepository {
+    private val tracksHistory: ArrayList<Track> = sharedPrefStorage.load()
+
+    override fun add(
+        track: Track,
+        callback: SearchHistoryRepository.SearchHistoryCallback
+    ) {
+        for (i in 0 until tracksHistory.size) {
+            if (tracksHistory[i].trackId == track.trackId) {
+                tracksHistory.removeAt(i)
+                callback.onTrackRemoved(i)
+                break
+            }
+        }
+        if (tracksHistory.size == HISTORY_MAX_SIZE) {
+            tracksHistory.removeAt(HISTORY_MAX_SIZE - 1)
+            callback.onTrackRemoved(HISTORY_MAX_SIZE - 1)
+        }
+        tracksHistory.add(0, track)
+        sharedPrefStorage.save(tracksHistory)
+        callback.onTrackInserted(0)
+
+    }
+
+    override fun clear(): Int {
+        val tracksCount = tracksHistory.size
+        tracksHistory.clear()
+        sharedPrefStorage.clear()
+        return tracksCount
+    }
+
+    override fun get(): ArrayList<Track> {
+        return tracksHistory
+    }
+
+    companion object {
+        private const val HISTORY_MAX_SIZE = 10
+    }
+}

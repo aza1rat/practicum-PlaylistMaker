@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
-import ru.aza1rat.playlistmaker.data.Track
+import ru.aza1rat.playlistmaker.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -57,14 +57,14 @@ class PlayerActivity : AppCompatActivity() {
          val trackArtistTextView = findViewById<MaterialTextView>(R.id.trackArtist)
          trackArtistTextView.text = track.artistName
         val durationTextView = findViewById<MaterialTextView>(R.id.duration)
-        durationTextView.text = track.formatTrackTime()
+        durationTextView.text = track.trackTime
         val albumGroup = findViewById<Group>(R.id.albumGroup)
         val albumTextView = findViewById<MaterialTextView>(R.id.album)
         if (!hideGroupWhenNullValue(albumGroup,track.collectionName))
             albumTextView.text = track.collectionName
         val yearGroup = findViewById<Group>(R.id.yearGroup)
         val yearTextView = findViewById<MaterialTextView>(R.id.year)
-        val releaseYear = track.getReleaseYear()
+        val releaseYear = track.releaseYear
         if (!hideGroupWhenNullValue(yearGroup,releaseYear))
             yearTextView.text = releaseYear
         val genreTextView = findViewById<MaterialTextView>(R.id.genre)
