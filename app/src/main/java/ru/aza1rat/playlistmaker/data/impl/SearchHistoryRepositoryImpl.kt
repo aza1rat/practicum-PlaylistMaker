@@ -1,18 +1,13 @@
 package ru.aza1rat.playlistmaker.data.impl
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import ru.aza1rat.playlistmaker.data.dto.TrackDto
-import ru.aza1rat.playlistmaker.data.storage.SharedPrefStorage
+import ru.aza1rat.playlistmaker.data.SearchHistoryStorage
 import ru.aza1rat.playlistmaker.domain.api.SearchHistoryRepository
 import ru.aza1rat.playlistmaker.domain.model.Track
 
 class SearchHistoryRepositoryImpl (
-    private val sharedPrefStorage: SharedPrefStorage
+    private val searchHistoryStorage: SearchHistoryStorage
 ): SearchHistoryRepository {
-    private val tracksHistory: ArrayList<Track> = sharedPrefStorage.load()
+    private val tracksHistory: ArrayList<Track> = searchHistoryStorage.load()
 
     override fun add(
         track: Track,
@@ -30,7 +25,7 @@ class SearchHistoryRepositoryImpl (
             callback.onTrackRemoved(HISTORY_MAX_SIZE - 1)
         }
         tracksHistory.add(0, track)
-        sharedPrefStorage.save(tracksHistory)
+        searchHistoryStorage.save(tracksHistory)
         callback.onTrackInserted(0)
 
     }
@@ -38,7 +33,7 @@ class SearchHistoryRepositoryImpl (
     override fun clear(): Int {
         val tracksCount = tracksHistory.size
         tracksHistory.clear()
-        sharedPrefStorage.clear()
+        searchHistoryStorage.clear()
         return tracksCount
     }
 

@@ -7,10 +7,17 @@ import ru.aza1rat.playlistmaker.domain.model.Track
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) :
     SearchHistoryInteractor {
 
-    override fun add(
-        track: Track, callback: SearchHistoryRepository.SearchHistoryCallback
-    ) {
-        repository.add(track, callback)
+    override fun add(track: Track, trackInserted: (position:Int) -> Unit, trackRemoved: (position:Int) -> Unit) {
+        repository.add(track, object: SearchHistoryRepository.SearchHistoryCallback {
+            override fun onTrackRemoved(position: Int) {
+                trackRemoved.invoke(position)
+            }
+
+            override fun onTrackInserted(position: Int) {
+                trackInserted.invoke(position)
+            }
+
+        })
     }
 
     override fun clear(): Int {

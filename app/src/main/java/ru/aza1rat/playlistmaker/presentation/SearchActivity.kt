@@ -1,4 +1,4 @@
-package ru.aza1rat.playlistmaker
+package ru.aza1rat.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -19,7 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.gson.Gson
+import ru.aza1rat.playlistmaker.PlayerActivity
+import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.data.impl.TrackRepositoryImpl
 import ru.aza1rat.playlistmaker.presentation.adapter.TrackAdapter
 import ru.aza1rat.playlistmaker.data.impl.SearchHistoryRepositoryImpl
@@ -28,7 +29,6 @@ import ru.aza1rat.playlistmaker.data.storage.SharedPrefStorage
 import ru.aza1rat.playlistmaker.domain.api.TrackInteractor
 import ru.aza1rat.playlistmaker.domain.impl.TrackInteractorImpl
 import ru.aza1rat.playlistmaker.domain.TrackSearchResult
-import ru.aza1rat.playlistmaker.domain.api.SearchHistoryRepository
 import ru.aza1rat.playlistmaker.domain.impl.SearchHistoryInteractorImpl
 import ru.aza1rat.playlistmaker.domain.model.Track
 
@@ -65,10 +65,7 @@ class SearchActivity : AppCompatActivity() {
             })
         //
         //
-        val searchHistoryStorage = SharedPrefStorage(
-            getSharedPreferences(App.SHARED_PREFERENCES_NAME, MODE_PRIVATE),
-                Gson()
-            )
+        val searchHistoryStorage = SharedPrefStorage(this)
         val searchHistoryRepository = SearchHistoryRepositoryImpl(searchHistoryStorage)
         val searchHistoryInteractor = SearchHistoryInteractorImpl(searchHistoryRepository)
         //
@@ -86,15 +83,14 @@ class SearchActivity : AppCompatActivity() {
         tracksRecycler = findViewById(R.id.tracks)
         trackAdapter = TrackAdapter(
             createDebouncedTrackClickListener(tracksRecycler) { track ->
-                searchHistoryInteractor.add(track,object: SearchHistoryRepository.SearchHistoryCallback {
-                    override fun onTrackInserted(position: Int) {
-                        searchHistoryAdapter.notifyItemInserted(position)
-                        searchHistoryAdapter.notifyItemRangeChanged(0, searchHistoryAdapter.trackList.size)
-                    }
 
-                    override fun onTrackRemoved(position: Int) {
+                searchHistoryInteractor.add(track, trackInserted = {
+                    position ->
+                        searchHistoryAdapter.notifyItemInserted(position)
+                        searchHistoryAdapter.notifyItemRangeChanged(0,searchHistoryAdapter.trackList.size-1)
+                }, trackRemoved = {
+                    position: Int ->
                         searchHistoryAdapter.notifyItemRemoved(position)
-                    }
                 })
                 historyTracksRecycler.layoutManager?.scrollToPosition(0)
                 startActivity(createPlayerActivityIntent(track))
@@ -187,12 +183,10 @@ class SearchActivity : AppCompatActivity() {
     private fun createDebouncedTrackClickListener(
         recyclerView: RecyclerView, onTrackClickListener: TrackAdapter.OnTrackClickListener
     ): TrackAdapter.OnTrackClickListener {
-        return object : TrackAdapter.OnTrackClickListener {
-            override fun onTrackClick(track: Track) {
-                recyclerView.isEnabled = false
-                onTrackClickListener.onTrackClick(track)
-                recyclerView.isEnabled = true
-            }
+        return TrackAdapter.OnTrackClickListener { track ->
+            recyclerView.isEnabled = false
+            onTrackClickListener.onTrackClick(track)
+            recyclerView.isEnabled = true
         }
     }
 
@@ -218,15 +212,17 @@ class SearchActivity : AppCompatActivity() {
         trackInteractor.searchTracks(songName, object : TrackInteractor.TrackConsumer {
             @SuppressLint("NotifyDataSetChanged")
             override fun consume(foundTracks: TrackSearchResult) {
-                if (foundTracks.result == 200) {
-                    if (!foundTracks.tracks.isEmpty()) {
-                        trackAdapter.trackList = foundTracks.tracks
-                        trackAdapter.notifyDataSetChanged()
-                        showMainView(tracksRecycler)
+                handler.post {
+                    if (foundTracks.result == 200) {
+                        if (foundTracks.tracks.isNotEmpty()) {
+                            trackAdapter.trackList = foundTracks.tracks
+                            trackAdapter.notifyDataSetChanged()
+                            showMainView(tracksRecycler)
+                        } else
+                            showMainView(searchEmptyLayout)
                     } else
-                        showMainView(searchEmptyLayout)
-                } else
-                    showMainView(noInternetLayout)
+                        showMainView(noInternetLayout)
+                }
             }
         })
     }
