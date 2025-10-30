@@ -21,7 +21,7 @@ class RetrofitNetworkClient: NetworkClient {
                 val body = response.body() ?: BaseResponse()
                 return body.apply { resultCode = response.code() }
             }
-            catch (exception: Exception) {
+            catch (_: Exception) {
                 return BaseResponse().apply { resultCode = 500 }
             }
         }

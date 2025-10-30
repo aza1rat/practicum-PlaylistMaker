@@ -1,6 +1,6 @@
-package ru.aza1rat.playlistmaker.domain.api
+package ru.aza1rat.playlistmaker.domain.api.interactor
 
-import ru.aza1rat.playlistmaker.domain.TrackSearchResult
+import ru.aza1rat.playlistmaker.domain.model.TrackSearchResult
 
 interface TrackInteractor {
     fun searchTracks(query: String,consumer: TrackConsumer)

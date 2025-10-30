@@ -1,4 +1,4 @@
-package ru.aza1rat.playlistmaker
+package ru.aza1rat.playlistmaker.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
+import ru.aza1rat.playlistmaker.App
+import ru.aza1rat.playlistmaker.Creator
+import ru.aza1rat.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +41,12 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         val themeSwitch = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val appContext = applicationContext as App
-        themeSwitch.isChecked = appContext.darkTheme
+
+        val themeInteractor = Creator.provideThemeInteractor((application as App).themeControl)
+
+        themeSwitch.isChecked = themeInteractor.isDarkTheme()
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            appContext.switchTheme(isChecked)
+            themeInteractor.switchTheme()
         }
         val backImageButton = findViewById<ImageButton>(R.id.back)
         backImageButton.setOnClickListener { finish() }

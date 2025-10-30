@@ -1,4 +1,4 @@
-package ru.aza1rat.playlistmaker.presentation
+package ru.aza1rat.playlistmaker.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,7 +8,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -19,18 +18,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import ru.aza1rat.playlistmaker.PlayerActivity
+import ru.aza1rat.playlistmaker.Creator
 import ru.aza1rat.playlistmaker.R
-import ru.aza1rat.playlistmaker.data.impl.TrackRepositoryImpl
-import ru.aza1rat.playlistmaker.presentation.adapter.TrackAdapter
-import ru.aza1rat.playlistmaker.data.impl.SearchHistoryRepositoryImpl
-import ru.aza1rat.playlistmaker.data.network.RetrofitNetworkClient
-import ru.aza1rat.playlistmaker.data.storage.SharedPrefStorage
-import ru.aza1rat.playlistmaker.domain.api.TrackInteractor
-import ru.aza1rat.playlistmaker.domain.impl.TrackInteractorImpl
-import ru.aza1rat.playlistmaker.domain.TrackSearchResult
-import ru.aza1rat.playlistmaker.domain.impl.SearchHistoryInteractorImpl
+import ru.aza1rat.playlistmaker.domain.api.interactor.SearchHistoryInteractor
+import ru.aza1rat.playlistmaker.domain.api.interactor.TrackInteractor
+import ru.aza1rat.playlistmaker.domain.api.repository.SearchHistoryRepository
 import ru.aza1rat.playlistmaker.domain.model.Track
+import ru.aza1rat.playlistmaker.domain.model.TrackSearchResult
+import ru.aza1rat.playlistmaker.presentation.adapter.TrackAdapter
+import ru.aza1rat.playlistmaker.presentation.mapper.TrackMapper
 
 class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
@@ -63,13 +59,8 @@ class SearchActivity : AppCompatActivity() {
             createDebouncedTrackClickListener(historyTracksRecycler) { track ->
                 startActivity(createPlayerActivityIntent(track))
             })
-        //
-        //
-        val searchHistoryStorage = SharedPrefStorage(this)
-        val searchHistoryRepository = SearchHistoryRepositoryImpl(searchHistoryStorage)
-        val searchHistoryInteractor = SearchHistoryInteractorImpl(searchHistoryRepository)
-        //
-        //
+
+        val searchHistoryInteractor = Creator.provideSearchHistoryInteractor()
         searchHistoryAdapter.trackList = searchHistoryInteractor.get()
 
         historyTracksRecycler.adapter = searchHistoryAdapter
@@ -83,15 +74,19 @@ class SearchActivity : AppCompatActivity() {
         tracksRecycler = findViewById(R.id.tracks)
         trackAdapter = TrackAdapter(
             createDebouncedTrackClickListener(tracksRecycler) { track ->
-
-                searchHistoryInteractor.add(track, trackInserted = {
-                    position ->
+                searchHistoryInteractor.add(track,object: SearchHistoryRepository.SearchHistoryCallback {
+                    override fun onTrackInserted(position: Int) {
                         searchHistoryAdapter.notifyItemInserted(position)
-                        searchHistoryAdapter.notifyItemRangeChanged(0,searchHistoryAdapter.trackList.size-1)
-                }, trackRemoved = {
-                    position: Int ->
+                        searchHistoryAdapter.notifyItemRangeChanged(
+                            0,
+                            searchHistoryAdapter.trackList.size - 1
+                        )
+                    }
+                    override fun onTrackRemoved(position: Int) {
                         searchHistoryAdapter.notifyItemRemoved(position)
+                    }
                 })
+
                 historyTracksRecycler.layoutManager?.scrollToPosition(0)
                 startActivity(createPlayerActivityIntent(track))
             })
@@ -145,7 +140,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun createTextWatcher(
-        searchHistory: SearchHistoryInteractorImpl, clearSearchImageView: ImageView
+        searchHistory: SearchHistoryInteractor, clearSearchImageView: ImageView
     ): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -169,8 +164,8 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun createOnFocusChangeListener(searchHistory: SearchHistoryInteractorImpl): OnFocusChangeListener {
-        return OnFocusChangeListener { view, hasFocus ->
+    private fun createOnFocusChangeListener(searchHistory: SearchHistoryInteractor): View.OnFocusChangeListener {
+        return View.OnFocusChangeListener { view, hasFocus ->
             val searchTextEdit: EditText = view as EditText
             if (hasFocus && searchTextEdit.text.isNullOrEmpty() && searchHistory.get()
                     .isNotEmpty()
@@ -191,8 +186,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun createPlayerActivityIntent(track: Track): Intent {
+        val trackParcelable = TrackMapper.mapToTrackParcelable(track)
         return Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            this.putExtra(PlayerActivity.INTENT_TRACK_EXTRA_KEY, track)
+            this.putExtra(PlayerActivity.Companion.INTENT_TRACK_EXTRA_KEY, trackParcelable)
         }
     }
 
@@ -205,9 +201,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchRequest(songName: String, trackAdapter: TrackAdapter) {
-        val networkClient = RetrofitNetworkClient()
-        val trackRepository = TrackRepositoryImpl(networkClient)
-        val trackInteractor = TrackInteractorImpl(trackRepository)
+        val trackInteractor = Creator.provideTrackInteractor()
         showMainView(requestProgressLayout)
         trackInteractor.searchTracks(songName, object : TrackInteractor.TrackConsumer {
             @SuppressLint("NotifyDataSetChanged")

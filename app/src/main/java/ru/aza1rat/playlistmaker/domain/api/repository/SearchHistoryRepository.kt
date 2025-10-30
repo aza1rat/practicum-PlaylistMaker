@@ -1,4 +1,4 @@
-package ru.aza1rat.playlistmaker.domain.api
+package ru.aza1rat.playlistmaker.domain.api.repository
 
 import ru.aza1rat.playlistmaker.domain.model.Track
 

@@ -1,6 +1,10 @@
-package ru.aza1rat.playlistmaker.domain.model
+package ru.aza1rat.playlistmaker.presentation.model
 
-data class Track (
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class TrackParcelable(
     val trackId: Int,
     val trackName: String,
     val artistName: String,
@@ -11,11 +15,4 @@ data class Track (
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String
-) {
-    fun getArtworkUrl512(): String? {
-        return if (artworkUrl100.isNotEmpty()) {
-            artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
-        } else
-            null
-    }
-}
+): Parcelable

@@ -1,11 +1,7 @@
 package ru.aza1rat.playlistmaker.data.dto
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 
 data class TrackDto(
@@ -20,13 +16,3 @@ data class TrackDto(
     val country: String,
     val previewUrl: String
 )
-{
-    fun formatTrackTime(): String{
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTime)
-    }
-
-    fun getReleaseYear(): String? {
-        releaseDate ?: return null
-        return SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
-    }
-}

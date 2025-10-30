@@ -1,13 +1,13 @@
 package ru.aza1rat.playlistmaker.data.impl
 
 import ru.aza1rat.playlistmaker.data.SearchHistoryStorage
-import ru.aza1rat.playlistmaker.domain.api.SearchHistoryRepository
+import ru.aza1rat.playlistmaker.domain.api.repository.SearchHistoryRepository
 import ru.aza1rat.playlistmaker.domain.model.Track
 
 class SearchHistoryRepositoryImpl (
-    private val searchHistoryStorage: SearchHistoryStorage
-): SearchHistoryRepository {
+    private val searchHistoryStorage: SearchHistoryStorage,
     private val tracksHistory: ArrayList<Track> = searchHistoryStorage.load()
+): SearchHistoryRepository {
 
     override fun add(
         track: Track,
