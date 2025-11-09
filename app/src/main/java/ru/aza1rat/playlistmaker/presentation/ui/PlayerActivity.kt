@@ -5,8 +5,11 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
@@ -16,8 +19,8 @@ import ru.aza1rat.playlistmaker.domain.api.interactor.PlayerInteractor
 import ru.aza1rat.playlistmaker.domain.api.repository.PlayerRepository.PlayerStateChangeListener
 import ru.aza1rat.playlistmaker.domain.model.PlayerState
 import ru.aza1rat.playlistmaker.domain.model.Track
-import ru.aza1rat.playlistmaker.presentation.mapper.TrackParcelableMapper
-import ru.aza1rat.playlistmaker.presentation.model.TrackParcelable
+import ru.aza1rat.playlistmaker.presentation.mapper.TrackUIMapper
+import ru.aza1rat.playlistmaker.presentation.model.TrackUI
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -41,13 +44,19 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_player)
-        val trackParcelable = intent.getParcelableExtra<TrackParcelable>(INTENT_TRACK_EXTRA_KEY)
-        if (trackParcelable == null) {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        val trackUI = intent.getParcelableExtra<TrackUI>(INTENT_TRACK_EXTRA_KEY)
+        if (trackUI == null) {
             finish()
             return
         }
-        val track = TrackParcelableMapper.mapToTrack(trackParcelable)
+        val track = TrackUIMapper.mapToTrack(trackUI)
         progressPlayingTextView = findViewById(R.id.progressPlaying)
         playButton = findViewById(R.id.play)
         playButton.isEnabled = false

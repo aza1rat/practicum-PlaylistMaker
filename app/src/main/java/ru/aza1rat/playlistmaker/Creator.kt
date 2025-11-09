@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
 import com.google.gson.Gson
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import ru.aza1rat.playlistmaker.data.BaseThemeControl
 import ru.aza1rat.playlistmaker.data.NetworkClient
 import ru.aza1rat.playlistmaker.data.SearchHistoryStorage
@@ -12,6 +14,7 @@ import ru.aza1rat.playlistmaker.data.impl.SearchHistoryRepositoryImpl
 import ru.aza1rat.playlistmaker.data.impl.ThemeRepositoryImpl
 import ru.aza1rat.playlistmaker.data.impl.TrackRepositoryImpl
 import ru.aza1rat.playlistmaker.data.network.RetrofitNetworkClient
+import ru.aza1rat.playlistmaker.data.network.SearchAPI
 import ru.aza1rat.playlistmaker.data.settings.ThemeControl
 import ru.aza1rat.playlistmaker.data.storage.SharedPrefStorage
 import ru.aza1rat.playlistmaker.domain.api.interactor.PlayerInteractor
@@ -28,8 +31,9 @@ import ru.aza1rat.playlistmaker.domain.impl.ThemeInteractorImpl
 import ru.aza1rat.playlistmaker.domain.impl.TrackInteractorImpl
 
 object Creator {
-    const val SHARED_PREFERENCES_NAME = "playlistmaker_preferences"
-
+    private const val SHARED_PREFERENCES_NAME = "playlistmaker_preferences"
+    private const val ITUNES_BASE_URL = "https://itunes.apple.com"
+    private val retrofit: Retrofit by lazy { createRetrofit() }
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var appContext: Context
 
@@ -78,6 +82,17 @@ object Creator {
         return Gson()
     }
 
+    private fun createRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(ITUNES_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun createSearchService(): SearchAPI {
+        return retrofit.create(SearchAPI::class.java)
+    }
+
     private fun createSearchHistoryStorage(): SearchHistoryStorage {
         return SharedPrefStorage(sharedPreferences,createGson())
     }
@@ -87,6 +102,6 @@ object Creator {
     }
 
     private fun createNetworkClient(): NetworkClient {
-        return RetrofitNetworkClient()
+        return RetrofitNetworkClient(createSearchService())
     }
 }

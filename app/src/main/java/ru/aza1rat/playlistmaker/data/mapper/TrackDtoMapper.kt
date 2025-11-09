@@ -1,5 +1,6 @@
 package ru.aza1rat.playlistmaker.data.mapper
 
+import android.util.Log
 import ru.aza1rat.playlistmaker.data.dto.TrackDto
 import ru.aza1rat.playlistmaker.domain.model.Track
 import java.text.SimpleDateFormat
@@ -8,6 +9,7 @@ import java.util.Locale
 
 object TrackDtoMapper {
     fun mapToTrack(trackDto: TrackDto): Track {
+        Log.d("TrackInfo", "name: ${trackDto.trackId}")
         return Track(
             trackId = trackDto.trackId,
             trackName = trackDto.trackName,

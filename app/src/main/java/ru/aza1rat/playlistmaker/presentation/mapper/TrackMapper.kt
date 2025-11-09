@@ -1,11 +1,11 @@
 package ru.aza1rat.playlistmaker.presentation.mapper
 
 import ru.aza1rat.playlistmaker.domain.model.Track
-import ru.aza1rat.playlistmaker.presentation.model.TrackParcelable
+import ru.aza1rat.playlistmaker.presentation.model.TrackUI
 
 object TrackMapper {
-    fun mapToTrackParcelable(track: Track): TrackParcelable {
-        return TrackParcelable(
+    fun mapToTrackParcelable(track: Track): TrackUI {
+        return TrackUI(
             trackId = track.trackId,
             trackName = track.trackName,
             artistName = track.artistName,
