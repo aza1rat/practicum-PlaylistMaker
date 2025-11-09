@@ -1,11 +1,11 @@
-package ru.aza1rat.playlistmaker.adapter
+package ru.aza1rat.playlistmaker.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.aza1rat.playlistmaker.R
-import ru.aza1rat.playlistmaker.data.Track
-import ru.aza1rat.playlistmaker.viewHolder.TrackViewHolder
+import ru.aza1rat.playlistmaker.domain.model.Track
+import ru.aza1rat.playlistmaker.presentation.viewholder.TrackViewHolder
 
 class TrackAdapter(private val onTrackClickListener: OnTrackClickListener? = null) : RecyclerView.Adapter<TrackViewHolder>(){
     fun interface OnTrackClickListener{

@@ -1,17 +1,29 @@
-package ru.aza1rat.playlistmaker
+package ru.aza1rat.playlistmaker.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
+import ru.aza1rat.playlistmaker.App
+import ru.aza1rat.playlistmaker.Creator
+import ru.aza1rat.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         val shareTextView = findViewById<MaterialButton>(R.id.share)
         shareTextView.setOnClickListener {
             Intent(Intent.ACTION_SEND).apply {
@@ -38,10 +50,12 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         val themeSwitch = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val appContext = applicationContext as App
-        themeSwitch.isChecked = appContext.darkTheme
+
+        val themeInteractor = Creator.provideThemeInteractor((application as App).themeControl)
+
+        themeSwitch.isChecked = themeInteractor.isDarkTheme()
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            appContext.switchTheme(isChecked)
+            themeInteractor.switchTheme()
         }
         val backImageButton = findViewById<ImageButton>(R.id.back)
         backImageButton.setOnClickListener { finish() }
