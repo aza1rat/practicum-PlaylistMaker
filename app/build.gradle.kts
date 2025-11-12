@@ -34,14 +34,19 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.livecycle.viewmodel)
+    implementation(libs.livecycle.livedata)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.glide)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.factory)
