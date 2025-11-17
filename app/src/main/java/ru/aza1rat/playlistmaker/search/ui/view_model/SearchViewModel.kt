@@ -37,13 +37,7 @@ class SearchViewModel (
     fun observeSearchHistoryTracks(): LiveData<ArrayList<Track>> = searchHistoryTracks
 
     init {
-        searchHistoryTracks.value = searchHistoryInteractor.get()
-    }
-
-    sealed interface SearchHistoryEvent {
-        data class TrackInserted(val position: Int) : SearchHistoryEvent
-        data class TrackRemoved(val position: Int) : SearchHistoryEvent
-        data class TracksCleared(val count: Int): SearchHistoryEvent
+        searchHistoryTracks.value = searchHistoryInteractor.get() as ArrayList<Track>
     }
 
     override fun onCleared() {
@@ -95,6 +89,13 @@ class SearchViewModel (
         handler.removeCallbacks(sendRequestTask)
         handler.postDelayed(sendRequestTask, REQUEST_DELAY)
     }
+
+    sealed interface SearchHistoryEvent {
+        data class TrackInserted(val position: Int) : SearchHistoryEvent
+        data class TrackRemoved(val position: Int) : SearchHistoryEvent
+        data class TracksCleared(val count: Int): SearchHistoryEvent
+    }
+
     companion object {
         private const val REQUEST_DELAY = 2000L
         fun getFactory() : ViewModelProvider.Factory = viewModelFactory {

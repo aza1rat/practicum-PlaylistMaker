@@ -1,13 +1,16 @@
 package ru.aza1rat.playlistmaker.player.ui.view_model
 
+import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.creator.Creator
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
@@ -15,7 +18,7 @@ import ru.aza1rat.playlistmaker.player.domain.model.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(private val playerInteractor: PlayerInteractor, private val placeholderProgress: String) : ViewModel() {
     private val playerState = MutableLiveData<PlayerState>()
     fun observePlayerState(): LiveData<PlayerState> = playerState
     private val progressPlaying = MutableLiveData<String>()
@@ -41,7 +44,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
                     PlayerState.COMPLETED -> {
                         handler.removeCallbacks(progressCheckTask)
                         playerState.value = PlayerState.COMPLETED
-                        progressPlaying.value = "00:00"
+                        progressPlaying.value = placeholderProgress
                     }
                     PlayerState.PLAYING -> {
                         handler.postDelayed(progressCheckTask, PROGRESS_CHECK_DELAY)
@@ -91,7 +94,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
         fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                PlayerViewModel(Creator.providePlayerInteractor())
+                val placeholder = (this[APPLICATION_KEY] as Application).getString(R.string.placeholder_progress_playing)
+                PlayerViewModel(Creator.providePlayerInteractor(),placeholder)
             }
         }
     }

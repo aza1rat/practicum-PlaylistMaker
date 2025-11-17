@@ -5,7 +5,7 @@ import ru.aza1rat.playlistmaker.search.domain.model.Track
 interface SearchHistoryRepository {
     fun add(track: Track, callback: SearchHistoryCallback)
     fun clear(): Int
-    fun get(): ArrayList<Track>
+    fun get(): List<Track>
 
     interface SearchHistoryCallback {
         fun onTrackRemoved(position: Int)

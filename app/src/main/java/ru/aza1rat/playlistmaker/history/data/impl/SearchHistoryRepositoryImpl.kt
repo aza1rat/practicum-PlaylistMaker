@@ -37,7 +37,7 @@ class SearchHistoryRepositoryImpl (
         return tracksCount
     }
 
-    override fun get(): ArrayList<Track> {
+    override fun get(): List<Track> {
         return tracksHistory
     }
 
