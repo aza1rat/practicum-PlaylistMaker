@@ -1,7 +1,8 @@
 package ru.aza1rat.playlistmaker
 
 import android.app.Application
-import ru.aza1rat.playlistmaker.data.BaseThemeControl
+import ru.aza1rat.playlistmaker.creator.Creator
+import ru.aza1rat.playlistmaker.settings.data.BaseThemeControl
 
 class App : Application() {
     lateinit var themeControl: BaseThemeControl
