@@ -1,6 +1,6 @@
 package ru.aza1rat.playlistmaker.player.domain.api
 
-import ru.aza1rat.playlistmaker.player.domain.model.PlayerState
+import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
 
 interface PlayerRepository {
     fun startPlayer()
@@ -9,9 +9,9 @@ interface PlayerRepository {
     fun setOnPlayerStateChangeListener(onPlayerStateChangeListener: PlayerStateChangeListener)
     fun getCurrentPosition(): Int
     fun release()
-    fun getCurrentState(): PlayerState
+    fun getCurrentState(): MediaPlayerState
 
     interface PlayerStateChangeListener {
-        fun onPlayerStateChanged(state: PlayerState)
+        fun onPlayerStateChanged(state: MediaPlayerState)
     }
 }

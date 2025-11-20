@@ -1,6 +1,6 @@
 package ru.aza1rat.playlistmaker.player.domain.model
 
-enum class PlayerState {
+enum class MediaPlayerState {
     DEFAULT,
     PREPARED,
     PLAYING,

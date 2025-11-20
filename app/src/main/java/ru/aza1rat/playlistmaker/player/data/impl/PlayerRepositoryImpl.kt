@@ -2,34 +2,34 @@ package ru.aza1rat.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
-import ru.aza1rat.playlistmaker.player.domain.model.PlayerState
+import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
 
 class PlayerRepositoryImpl(
     private val mediaPlayer: MediaPlayer,
     private var onPlayerStateChangeListener: PlayerRepository.PlayerStateChangeListener? = null
 ): PlayerRepository {
-    private var currentState: PlayerState = PlayerState.DEFAULT
+    private var currentState: MediaPlayerState = MediaPlayerState.DEFAULT
 
     override fun startPlayer() {
         mediaPlayer.start()
-        changeState(PlayerState.PLAYING)
+        changeState(MediaPlayerState.PLAYING)
     }
 
     override fun pausePlayer() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-            changeState(PlayerState.PAUSED)
+            changeState(MediaPlayerState.PAUSED)
         }
     }
 
     override fun preparePlayer(trackUrl: String) {
         mediaPlayer.setDataSource(trackUrl)
-        changeState(PlayerState.DEFAULT)
+        changeState(MediaPlayerState.DEFAULT)
         mediaPlayer.setOnPreparedListener {
-            changeState(PlayerState.PREPARED)
+            changeState(MediaPlayerState.PREPARED)
         }
         mediaPlayer.setOnCompletionListener {
-            changeState(PlayerState.COMPLETED)
+            changeState(MediaPlayerState.COMPLETED)
         }
         mediaPlayer.prepareAsync()
     }
@@ -46,11 +46,11 @@ class PlayerRepositoryImpl(
         mediaPlayer.release()
     }
 
-    override fun getCurrentState(): PlayerState {
+    override fun getCurrentState(): MediaPlayerState {
         return currentState
     }
 
-    private fun changeState(state: PlayerState) {
+    private fun changeState(state: MediaPlayerState) {
         currentState = state
         this.onPlayerStateChangeListener?.onPlayerStateChanged(state)
     }

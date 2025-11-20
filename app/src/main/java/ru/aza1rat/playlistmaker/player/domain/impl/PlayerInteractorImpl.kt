@@ -1,6 +1,6 @@
 package ru.aza1rat.playlistmaker.player.domain.impl
 
-import ru.aza1rat.playlistmaker.player.domain.model.PlayerState
+import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
 
@@ -29,7 +29,7 @@ class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInte
         repository.release()
     }
 
-    override fun getCurrentState(): PlayerState {
+    override fun getCurrentState(): MediaPlayerState {
         return repository.getCurrentState()
     }
 }

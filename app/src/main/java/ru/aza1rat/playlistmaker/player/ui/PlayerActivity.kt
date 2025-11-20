@@ -2,25 +2,23 @@ package ru.aza1rat.playlistmaker.player.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.databinding.ActivityPlayerBinding
-import ru.aza1rat.playlistmaker.player.domain.model.PlayerState
 import ru.aza1rat.playlistmaker.player.ui.mapper.TrackUIMapper
+import ru.aza1rat.playlistmaker.player.ui.model.PlayerState
 import ru.aza1rat.playlistmaker.player.ui.view_model.PlayerViewModel
 import ru.aza1rat.playlistmaker.search.ui.model.TrackUI
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-    private val playerViewModel: PlayerViewModel by viewModels {
-        PlayerViewModel.Companion.getFactory()
-    }
+    private val playerViewModel: PlayerViewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +56,8 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
         playerViewModel.pause()
+        super.onPause()
     }
 
     private fun hideGroupWhenNullValue(group: Group, value: String?): Boolean {
@@ -69,23 +67,23 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun attachObservers() {
         playerViewModel.observePlayerState().observe(this) {
-            binding.play.isEnabled = it != PlayerState.DEFAULT
+            binding.play.isEnabled = it != PlayerState.NotReady
             when (it) {
-                PlayerState.PLAYING -> {
-                    binding.play.setImageResource(R.drawable.ic_pause_84)
-                }
-                PlayerState.PAUSED -> {
-                    binding.play.setImageResource(R.drawable.ic_play_84)
-                }
-                PlayerState.COMPLETED -> {
+                is PlayerState.Completed -> {
                     binding.play.setImageResource(R.drawable.ic_play_84)
                     binding.progressPlaying.text = getString(R.string.placeholder_progress_playing)
                 }
-                PlayerState.DEFAULT, PlayerState.PREPARED -> {}
+
+                is PlayerState.Paused -> {
+                    binding.play.setImageResource(R.drawable.ic_play_84)
+                    binding.progressPlaying.text = it.progress
+                }
+                is PlayerState.Playing -> {
+                    binding.play.setImageResource(R.drawable.ic_pause_84)
+                    binding.progressPlaying.text = it.progress
+                }
+                else -> {}
             }
-        }
-        playerViewModel.observeProgressPlaying().observe(this) {
-            binding.progressPlaying.text = it
         }
     }
 
