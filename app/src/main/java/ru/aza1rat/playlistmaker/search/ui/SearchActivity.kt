@@ -8,12 +8,12 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.aza1rat.playlistmaker.databinding.ActivitySearchBinding
 import ru.aza1rat.playlistmaker.search.domain.model.Track
 import ru.aza1rat.playlistmaker.player.ui.PlayerActivity
@@ -23,9 +23,7 @@ import ru.aza1rat.playlistmaker.search.ui.model.SearchState
 import ru.aza1rat.playlistmaker.search.ui.view_model.SearchViewModel
 
 class SearchActivity : AppCompatActivity() {
-    private val viewModel: SearchViewModel by viewModels {
-        SearchViewModel.getFactory()
-    }
+    private val searchViewModel: SearchViewModel by viewModel<SearchViewModel>()
     private var textWatcher: TextWatcher? = null
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var searchHistoryAdapter: TrackAdapter
@@ -48,13 +46,13 @@ class SearchActivity : AppCompatActivity() {
                 startActivity(createPlayerActivityIntent(track))
             })
 
-        viewModel.observeSearchHistoryTracks().observe(this) {
+        searchViewModel.observeSearchHistoryTracks().observe(this) {
             searchHistoryAdapter.trackList = it
         }
 
         binding.historyTracks.adapter = searchHistoryAdapter
 
-        viewModel.observeSearchHistoryEvent().observe(this) {
+        searchViewModel.observeSearchHistoryEvent().observe(this) {
             when (it) {
                 is SearchViewModel.SearchHistoryEvent.TrackInserted -> {
                     searchHistoryAdapter.notifyItemInserted(it.position)
@@ -71,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observeSearchState().observe(this) {
+        searchViewModel.observeSearchState().observe(this) {
             when (it) {
                 is SearchState.Error -> showMainView(binding.noInternet)
                 is SearchState.Empty -> showMainView(binding.searchEmpty)
@@ -87,18 +85,18 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.historyClear.setOnClickListener {
-            viewModel.clearSearchHistory()
+            searchViewModel.clearSearchHistory()
         }
         trackAdapter = TrackAdapter(
             createDebouncedTrackClickListener(binding.tracks) { track ->
-                viewModel.addTrackToSearchHistory(track)
+                searchViewModel.addTrackToSearchHistory(track)
                 startActivity(createPlayerActivityIntent(track))
             })
         binding.tracks.adapter = trackAdapter
         binding.refresh.setOnClickListener {
-            viewModel.doSearch(binding.search.text.toString())
+            searchViewModel.doSearch(binding.search.text.toString())
         }
-        binding.search.setText(viewModel.searchValue)
+        binding.search.setText(searchViewModel.searchValue)
         binding.search.onFocusChangeListener = createOnFocusChangeListener()
 
         binding.clearSearch.setOnClickListener {
@@ -132,7 +130,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearSearch.isVisible = !s.isNullOrEmpty()
-                viewModel.onTextChanged(s.toString(), binding.search.hasFocus(),
+                searchViewModel.onTextChanged(s.toString(), binding.search.hasFocus(),
                     binding.searchHistory.isVisible)
             }
 

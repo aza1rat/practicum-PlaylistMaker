@@ -1,61 +1,58 @@
 package ru.aza1rat.playlistmaker.player.ui.view_model
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import ru.aza1rat.playlistmaker.R
-import ru.aza1rat.playlistmaker.creator.Creator
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
-import ru.aza1rat.playlistmaker.player.domain.model.PlayerState
+import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
+import ru.aza1rat.playlistmaker.player.ui.model.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val playerInteractor: PlayerInteractor, private val placeholderProgress: String) : ViewModel() {
+class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val playerState = MutableLiveData<PlayerState>()
     fun observePlayerState(): LiveData<PlayerState> = playerState
-    private val progressPlaying = MutableLiveData<String>()
-    fun observeProgressPlaying(): LiveData<String> = progressPlaying
-
     private val progressFormatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+    private var progressPlaying: String = formatProgress(0)
     private val handler = Handler(Looper.getMainLooper())
     private val progressCheckTask = object : Runnable {
         override fun run() {
-            progressPlaying.value = progressFormatter.format(playerInteractor.getCurrentPosition())
-            if (playerInteractor.getCurrentState() == PlayerState.PLAYING)
+            progressPlaying = formatProgress(playerInteractor.getCurrentPosition())
+            val state = playerInteractor.getCurrentState()
+            if (state == MediaPlayerState.PLAYING) {
+                playerState.value = PlayerState.Playing(progressPlaying)
                 handler.postDelayed(this, PROGRESS_CHECK_DELAY)
+            }
+            if (state == MediaPlayerState.PAUSED)
+                playerState.value = PlayerState.Paused(progressPlaying)
         }
     }
 
     init {
         playerInteractor.setOnPlayerStateChangeListener(object : PlayerRepository.PlayerStateChangeListener {
-            override fun onPlayerStateChanged(state: PlayerState) {
+            override fun onPlayerStateChanged(state: MediaPlayerState) {
                 when (state) {
-                    PlayerState.PREPARED -> {
-                        playerState.value = PlayerState.PREPARED
+                    MediaPlayerState.PREPARED -> {
+                        playerState.value = PlayerState.Prepared
                     }
-                    PlayerState.COMPLETED -> {
+                    MediaPlayerState.COMPLETED -> {
                         handler.removeCallbacks(progressCheckTask)
-                        playerState.value = PlayerState.COMPLETED
-                        progressPlaying.value = placeholderProgress
+                        progressPlaying = formatProgress(0)
+                        playerState.value = PlayerState.Completed
                     }
-                    PlayerState.PLAYING -> {
+                    MediaPlayerState.PLAYING -> {
                         handler.postDelayed(progressCheckTask, PROGRESS_CHECK_DELAY)
-                        playerState.value = PlayerState.PLAYING
+                        playerState.value = PlayerState.Playing(progressPlaying)
                     }
-                    PlayerState.PAUSED -> {
+                    MediaPlayerState.PAUSED -> {
                         handler.removeCallbacks(progressCheckTask)
-                        playerState.value = PlayerState.PAUSED
+                        playerState.value = PlayerState.Paused(progressPlaying)
                     }
-                    PlayerState.DEFAULT -> {
-                        playerState.value = PlayerState.DEFAULT
+                    MediaPlayerState.DEFAULT -> {
+                        playerState.value = PlayerState.NotReady
                     }
                 }
             }
@@ -63,16 +60,16 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor, private va
     }
 
     fun preparePlayer(trackUrl: String) {
-        if (playerInteractor.getCurrentState() == PlayerState.DEFAULT)
+        if (playerInteractor.getCurrentState() == MediaPlayerState.DEFAULT)
             playerInteractor.preparePlayer(trackUrl)
     }
 
     fun playOrPause() {
-        if (playerInteractor.getCurrentState() == PlayerState.DEFAULT) return
-        if (playerInteractor.getCurrentState() == PlayerState.PLAYING)
-            pause()
-        else
-            play()
+        when(playerInteractor.getCurrentState()) {
+            MediaPlayerState.DEFAULT -> return
+            MediaPlayerState.PLAYING -> pause()
+            else -> play()
+        }
     }
 
     fun play() {
@@ -89,14 +86,9 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor, private va
         super.onCleared()
     }
 
+    private fun formatProgress(progress: Int): String = progressFormatter.format(progress)
+
     companion object {
         private const val PROGRESS_CHECK_DELAY = 400L
-
-        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val placeholder = (this[APPLICATION_KEY] as Application).getString(R.string.placeholder_progress_playing)
-                PlayerViewModel(Creator.providePlayerInteractor(),placeholder)
-            }
-        }
     }
 }
