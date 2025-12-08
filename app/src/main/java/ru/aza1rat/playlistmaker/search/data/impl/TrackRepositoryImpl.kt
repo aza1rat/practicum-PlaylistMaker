@@ -6,7 +6,7 @@ import ru.aza1rat.playlistmaker.search.domain.model.Track
 import ru.aza1rat.playlistmaker.search.data.dto.TrackResponse
 import ru.aza1rat.playlistmaker.search.data.dto.TrackSearchRequest
 import ru.aza1rat.playlistmaker.search.domain.api.TrackRepository
-import ru.aza1rat.playlistmaker.util.data.Resource
+import ru.aza1rat.playlistmaker.util.domain.Resource
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
     override fun searchTracks(query: String): Resource<List<Track>> {

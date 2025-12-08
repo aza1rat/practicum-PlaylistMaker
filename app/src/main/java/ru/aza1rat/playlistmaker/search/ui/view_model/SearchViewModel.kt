@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import ru.aza1rat.playlistmaker.creator.Creator
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryInteractor
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryRepository
 import ru.aza1rat.playlistmaker.search.domain.api.TrackInteractor
@@ -22,6 +18,8 @@ class SearchViewModel (
 ) : ViewModel()
 {
     var searchValue = ""
+        private set
+    var clickOnTrackAllowed = true
         private set
     private val handler = Handler(Looper.getMainLooper())
     private val sendRequestTask = Runnable {
@@ -90,6 +88,11 @@ class SearchViewModel (
         handler.postDelayed(sendRequestTask, REQUEST_DELAY)
     }
 
+    fun trackClickDebounce() {
+        clickOnTrackAllowed = false
+        handler.postDelayed({clickOnTrackAllowed = true}, TRACK_CLICK_DEBOUNCE_DELAY)
+    }
+
     sealed interface SearchHistoryEvent {
         data class TrackInserted(val position: Int) : SearchHistoryEvent
         data class TrackRemoved(val position: Int) : SearchHistoryEvent
@@ -98,13 +101,6 @@ class SearchViewModel (
 
     companion object {
         private const val REQUEST_DELAY = 2000L
-        fun getFactory() : ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    Creator.provideTrackInteractor(),
-                    Creator.provideSearchHistoryInteractor()
-                )
-            }
-        }
+        private const val TRACK_CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

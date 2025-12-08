@@ -1,24 +1,21 @@
 package ru.aza1rat.playlistmaker.sharing.domain.impl
 
-import ru.aza1rat.playlistmaker.sharing.domain.model.EmailData
 import ru.aza1rat.playlistmaker.sharing.domain.api.ExternalNavigator
 import ru.aza1rat.playlistmaker.sharing.domain.api.SharingInteractor
+import ru.aza1rat.playlistmaker.sharing.domain.model.EmailData
 
 class SharingInteractorImpl(
-    private val externalNavigator: ExternalNavigator,
-    private val sharingLink: String,
-    private val termsLink: String,
-    private val email: EmailData
+    private val externalNavigator: ExternalNavigator
 ) : SharingInteractor {
-    override fun shareApp() {
-        externalNavigator.shareLink(sharingLink)
+    override fun shareApp(link: String) {
+        externalNavigator.shareLink(link)
     }
 
-    override fun openTerms() {
-        externalNavigator.openLink(termsLink)
+    override fun openTerms(link: String) {
+        externalNavigator.openLink(link)
     }
 
-    override fun openSupport() {
+    override fun openSupport(email: EmailData) {
         externalNavigator.openEmail(email)
     }
 }
