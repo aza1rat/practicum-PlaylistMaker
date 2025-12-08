@@ -11,16 +11,14 @@ import ru.aza1rat.playlistmaker.search.domain.api.TrackRepository
 import ru.aza1rat.playlistmaker.settings.data.impl.ThemeRepositoryImpl
 import ru.aza1rat.playlistmaker.settings.domain.ThemeRepository
 import ru.aza1rat.playlistmaker.sharing.data.ExternalNavigatorImpl
-import ru.aza1rat.playlistmaker.sharing.data.SharingResourceRepositoryImpl
 import ru.aza1rat.playlistmaker.sharing.domain.api.ExternalNavigator
-import ru.aza1rat.playlistmaker.sharing.domain.api.SharingResourceRepository
 
 val repositoryModule = module {
-    single<ThemeRepository> {
+    factory<ThemeRepository> {
         ThemeRepositoryImpl(get())
     }
 
-    single<TrackRepository> {
+    factory<TrackRepository> {
         TrackRepositoryImpl(get())
     }
 
@@ -32,11 +30,7 @@ val repositoryModule = module {
         PlayerRepositoryImpl(get())
     }
 
-    single<SharingResourceRepository> {
-        SharingResourceRepositoryImpl(context = androidContext())
-    }
-
-    single<ExternalNavigator> {
+    factory<ExternalNavigator> {
         ExternalNavigatorImpl(context = androidContext())
     }
 }

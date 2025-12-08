@@ -25,11 +25,11 @@ val interactorModule = module {
         SearchHistoryInteractorImpl(get())
     }
 
-    factory<SharingInteractor> {
-        SharingInteractorImpl(externalNavigator = get(), sharingResourceRepository = get())
-    }
-
     factory<PlayerInteractor> {
         PlayerInteractorImpl(get())
+    }
+
+    factory<SharingInteractor> {
+        SharingInteractorImpl(get())
     }
 }

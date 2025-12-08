@@ -19,6 +19,8 @@ class SearchViewModel (
 {
     var searchValue = ""
         private set
+    var clickOnTrackAllowed = true
+        private set
     private val handler = Handler(Looper.getMainLooper())
     private val sendRequestTask = Runnable {
             if (searchValue.isNotEmpty() && searchValue.isNotBlank()) {
@@ -86,6 +88,11 @@ class SearchViewModel (
         handler.postDelayed(sendRequestTask, REQUEST_DELAY)
     }
 
+    fun trackClickDebounce() {
+        clickOnTrackAllowed = false
+        handler.postDelayed({clickOnTrackAllowed = true}, TRACK_CLICK_DEBOUNCE_DELAY)
+    }
+
     sealed interface SearchHistoryEvent {
         data class TrackInserted(val position: Int) : SearchHistoryEvent
         data class TrackRemoved(val position: Int) : SearchHistoryEvent
@@ -94,5 +101,6 @@ class SearchViewModel (
 
     companion object {
         private const val REQUEST_DELAY = 2000L
+        private const val TRACK_CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

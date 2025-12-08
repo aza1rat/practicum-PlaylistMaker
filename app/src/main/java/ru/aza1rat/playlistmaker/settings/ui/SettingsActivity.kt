@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.databinding.ActivitySettingsBinding
 import ru.aza1rat.playlistmaker.settings.ui.view_model.SettingsViewModel
 
@@ -25,13 +26,21 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.share.setOnClickListener {
-            settingsViewModel.shareApp()
+            settingsViewModel.shareApp(
+                getString(R.string.share_app_message)
+            )
         }
         binding.messageSupport.setOnClickListener {
-            settingsViewModel.openSupport()
+            settingsViewModel.openSupport(
+                getString(R.string.author_email),
+                getString(R.string.email_support_title),
+                getString(R.string.email_support_text)
+            )
         }
         binding.userAgreement.setOnClickListener {
-            settingsViewModel.openTerms()
+            settingsViewModel.openTerms(
+                getString(R.string.link_user_agreement)
+            )
         }
 
         settingsViewModel.observeDarkThemeEnabled().observe(this) {

@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.aza1rat.playlistmaker.databinding.ActivitySearchBinding
 import ru.aza1rat.playlistmaker.search.domain.model.Track
@@ -42,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchHistoryAdapter = TrackAdapter(
-            createDebouncedTrackClickListener(binding.historyTracks) { track ->
+            createDebouncedTrackClickListener{ track ->
                 startActivity(createPlayerActivityIntent(track))
             })
 
@@ -88,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
             searchViewModel.clearSearchHistory()
         }
         trackAdapter = TrackAdapter(
-            createDebouncedTrackClickListener(binding.tracks) { track ->
+            createDebouncedTrackClickListener { track ->
                 searchViewModel.addTrackToSearchHistory(track)
                 startActivity(createPlayerActivityIntent(track))
             })
@@ -152,13 +151,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun createDebouncedTrackClickListener(
-        recyclerView: RecyclerView, onTrackClickListener: TrackAdapter.OnTrackClickListener
-    ): TrackAdapter.OnTrackClickListener {
+    private fun createDebouncedTrackClickListener(onTrackClickListener: TrackAdapter.OnTrackClickListener)
+    : TrackAdapter.OnTrackClickListener {
         return TrackAdapter.OnTrackClickListener { track ->
-            recyclerView.isEnabled = false
-            onTrackClickListener.onTrackClick(track)
-            recyclerView.isEnabled = true
+            if (searchViewModel.clickOnTrackAllowed) {
+                searchViewModel.trackClickDebounce()
+                onTrackClickListener.onTrackClick(track)
+            }
         }
     }
 
