@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import ru.aza1rat.playlistmaker.databinding.ActivityMainBinding
-import ru.aza1rat.playlistmaker.media_player.ui.MediaLibraryActivity
+import ru.aza1rat.playlistmaker.media_library.ui.MediaLibraryActivity
 import ru.aza1rat.playlistmaker.search.ui.SearchActivity
 import ru.aza1rat.playlistmaker.settings.ui.SettingsActivity
 

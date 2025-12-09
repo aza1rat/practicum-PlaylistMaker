@@ -38,4 +38,9 @@
     <dimen name="player_subtext_size">14sp</dimen>
     <dimen name="player_favorite_padding">13dp</dimen>
     <dimen name="player_favorite_padding_top">15dp</dimen>
+    <dimen name="media_library_horizontal_indent">16dp</dimen>
+    <dimen name="tab_height">2dp</dimen>
+    <dimen name="search_indent_top">2dp</dimen>
+    <dimen name="media_library_illustration_indent_top">106dp</dimen>
+    <dimen name="media_library_label_indent_top">136dp</dimen>
 </resources>

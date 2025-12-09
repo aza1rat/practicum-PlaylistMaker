@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+   >
+
+    <Button
+        style="@style/SearchRefreshButton"
+        android:text="@string/media_library_playlists_create"
+        android:layout_marginTop="@dimen/header_space"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emptyPlaylists"
+        android:layout_marginTop="@dimen/media_library_illustration_indent_top">
+
+        <ImageView style="@style/DayNightEmptyImageView"/>
+
+        <TextView
+            style="@style/SearchTextView"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/media_library_label_indent_top"
+            android:text="@string/media_library_playlists_empty" />
+
+    </FrameLayout>
+
+</FrameLayout>

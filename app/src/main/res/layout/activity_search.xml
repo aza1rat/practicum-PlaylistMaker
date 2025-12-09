@@ -78,7 +78,9 @@
         style="@style/SearchErrorFrameLayout"
         tools:visibility="gone">
 
-        <ImageView style="@style/DayNightSearchEmptyImageView" />
+        <ImageView
+            android:layout_marginTop="@dimen/search_indent_top"
+            style="@style/DayNightEmptyImageView" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/SearchErrorTextView"
@@ -91,7 +93,9 @@
         style="@style/SearchErrorFrameLayout"
         tools:visibility="gone">
 
-        <ImageView style="@style/DayNightSearchNoInternetImageView" />
+        <ImageView
+            android:layout_marginTop="@dimen/search_indent_top"
+            style="@style/DayNightSearchNoInternetImageView" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/SearchErrorTextView"

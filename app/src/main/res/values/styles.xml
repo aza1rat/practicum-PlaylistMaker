@@ -29,7 +29,7 @@
         <item name="android:tint">@color/text_gray</item>
     </style>
 
-    <style name="DayNightSearchEmptyImageView" parent="SearchIllustrationImageView">
+    <style name="DayNightEmptyImageView" parent="SearchIllustrationImageView">
         <item name="android:src">@drawable/il_search_empty_light_120</item>
     </style>
 
@@ -137,7 +137,6 @@
         <item name="android:layout_width">@dimen/search_illustration_size</item>
         <item name="android:layout_height">@dimen/search_illustration_size</item>
         <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_marginTop">2dp</item>
     </style>
 
     <style name="SearchTextView" parent="BaseTextView">
@@ -217,5 +216,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/bg_oval</item>
         <item name="layout_constraintDimensionRatio">w,1:1</item>
+    </style>
+
+    <style name="AllCapsTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
     </style>
 </resources>
