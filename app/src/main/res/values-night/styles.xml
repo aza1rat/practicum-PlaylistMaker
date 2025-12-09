@@ -16,7 +16,7 @@
         <item name="trackTint">@color/blue_light</item>
         <item name="thumbTint">@color/blue</item>
     </style>
-    <style name="DayNightSearchEmptyImageView" parent="SearchIllustrationImageView">
+    <style name="DayNightEmptyImageView" parent="SearchIllustrationImageView">
         <item name="android:src">@drawable/il_search_empty_dark_120</item>
     </style>
 
