@@ -10,7 +10,8 @@ import ru.aza1rat.playlistmaker.databinding.FragmentFavouriteTracksBinding
 import ru.aza1rat.playlistmaker.media_library.ui.view_model.FavouriteTracksViewModel
 
 class FavouriteTracksFragment: Fragment() {
-    private lateinit var binding: FragmentFavouriteTracksBinding
+    private var _binding: FragmentFavouriteTracksBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: FavouriteTracksViewModel by viewModel()
 
     override fun onCreateView(
@@ -18,8 +19,13 @@ class FavouriteTracksFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFavouriteTracksBinding.inflate(inflater, container, false)
+        _binding = FragmentFavouriteTracksBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     companion object {
