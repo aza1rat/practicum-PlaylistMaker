@@ -36,9 +36,8 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.play.isEnabled = false
         val trackUI = arguments?.getParcelable<TrackUI>(INTENT_TRACK_EXTRA_KEY) ?: run {
-            getNavController(
-                requireActivity(), R.id.fragmentContainer
-            ).navigateUp(); return@onViewCreated
+            requireActivity().getNavController(R.id.fragmentContainer)
+                .navigateUp(); return@onViewCreated
         }
         val track = TrackUIMapper.mapToTrack(trackUI)
         bindData(track)
@@ -105,7 +104,7 @@ class PlayerFragment : Fragment() {
             playerViewModel.playOrPause()
         }
         binding.back.setOnClickListener {
-            getNavController(requireActivity(), R.id.fragmentContainer).navigateUp()
+            requireActivity().getNavController(R.id.fragmentContainer).navigateUp()
         }
     }
 

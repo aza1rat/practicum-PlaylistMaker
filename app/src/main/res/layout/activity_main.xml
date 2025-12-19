@@ -4,8 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/colorPrimary">
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
@@ -13,39 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:navGraph="@navigation/main_navigation_graph"
         app:defaultNavHost="true"
-        />
+        app:navGraph="@navigation/main_navigation_graph" />
 
-    <FrameLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:background="?attr/colorPrimary"
-            app:itemIconTint="@color/bottom_navigation_text_color"
-            app:itemTextColor="@color/bottom_navigation_text_color"
-            app:menu="@menu/bottom_navigation_menu"
-            app:itemIconSize="24dp"
-            app:elevation="0dp"
-            app:itemTextAppearanceActiveBoldEnabled="false"
-            app:itemTextAppearanceActive="@style/BottomNavigationActiveTextAppearance"
-            app:itemTextAppearanceInactive="@style/BottomNavigationActiveTextAppearance"
-            />
+        android:layout_height="0.5dp"
+        android:background="@color/light_gray" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/light_gray"
-            />
-
-
-    </FrameLayout>
-
-
-
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="56dp"
+        app:elevation="0dp"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/bottom_navigation_text_color"
+        app:itemTextAppearanceActive="@style/BottomNavigationActiveTextAppearance"
+        app:itemTextAppearanceActiveBoldEnabled="false"
+        app:itemTextAppearanceInactive="@style/BottomNavigationActiveTextAppearance"
+        app:itemTextColor="@color/bottom_navigation_text_color"
+        app:menu="@menu/bottom_navigation_menu" />
 </LinearLayout>

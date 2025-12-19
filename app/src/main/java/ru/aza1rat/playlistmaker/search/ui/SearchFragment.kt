@@ -60,7 +60,7 @@ class SearchFragment : Fragment() {
         searchHistoryAdapter = TrackAdapter(
             createDebouncedTrackClickListener { track ->
                 navigateToPlayer(
-                    getNavController(requireActivity(), R.id.fragmentContainer),
+                    requireActivity().getNavController(R.id.fragmentContainer),
                     track
                 )
             })
@@ -71,7 +71,7 @@ class SearchFragment : Fragment() {
             createDebouncedTrackClickListener { track ->
                 searchViewModel.addTrackToSearchHistory(track)
                 navigateToPlayer(
-                    getNavController(requireActivity(), R.id.fragmentContainer),
+                    requireActivity().getNavController(R.id.fragmentContainer),
                     track
                 )
             })
