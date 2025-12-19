@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    style="@style/MainLayoutBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.ui.MainActivity">
+    android:background="?attr/colorPrimary">
 
-    <TextView
-        style="@style/TitleTextView"
-        android:layout_margin="@dimen/header_outer_indent"
-        android:paddingStart="@dimen/header_inner_indent"
-        android:text="@string/app_name"
-        android:textColor="@color/white" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:navGraph="@navigation/main_navigation_graph"
+        app:defaultNavHost="true"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
+            android:background="?attr/colorPrimary"
+            app:itemIconTint="@color/bottom_navigation_text_color"
+            app:itemTextColor="@color/bottom_navigation_text_color"
+            app:menu="@menu/bottom_navigation_menu"
+            app:itemIconSize="24dp"
+            app:elevation="0dp"
+            app:itemTextAppearanceActiveBoldEnabled="false"
+            app:itemTextAppearanceActive="@style/BottomNavigationActiveTextAppearance"
+            app:itemTextAppearanceInactive="@style/BottomNavigationActiveTextAppearance"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/light_gray"
+            />
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/search"
-        style="@style/MainButton"
-        android:layout_marginTop="@dimen/header_space"
-        android:text="@string/search"
-        app:icon="@drawable/ic_search_24" />
+    </FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/mediaLibrary"
-        style="@style/MainButton"
-        android:text="@string/media_library"
-        app:icon="@drawable/ic_library_24" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/settings"
-        style="@style/MainButton"
-        android:layout_marginBottom="28dp"
-        android:text="@string/settings"
-        app:icon="@drawable/ic_settings_24" />
+
+
 </LinearLayout>
