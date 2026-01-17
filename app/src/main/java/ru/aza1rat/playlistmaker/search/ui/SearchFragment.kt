@@ -1,74 +1,126 @@
 package ru.aza1rat.playlistmaker.search.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.aza1rat.playlistmaker.databinding.ActivitySearchBinding
+import ru.aza1rat.playlistmaker.R
+import ru.aza1rat.playlistmaker.databinding.FragmentSearchBinding
+import ru.aza1rat.playlistmaker.player.ui.PlayerFragment
 import ru.aza1rat.playlistmaker.search.domain.model.Track
-import ru.aza1rat.playlistmaker.player.ui.PlayerActivity
 import ru.aza1rat.playlistmaker.search.ui.adapter.TrackAdapter
 import ru.aza1rat.playlistmaker.search.ui.mapper.TrackMapper
 import ru.aza1rat.playlistmaker.search.ui.model.SearchState
 import ru.aza1rat.playlistmaker.search.ui.view_model.SearchViewModel
+import ru.aza1rat.playlistmaker.util.ui.getNavController
+import kotlin.getValue
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
     private val searchViewModel: SearchViewModel by viewModel<SearchViewModel>()
     private var textWatcher: TextWatcher? = null
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var searchHistoryAdapter: TrackAdapter
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initTrackAdapters()
+        setAdaptersToRecyclerView()
+        attachObservers()
+        binding.search.setText(searchViewModel.searchValue)
+        setupListeners()
+    }
+
+    override fun onDestroyView() {
+        binding.tracks.adapter = null
+        binding.historyTracks.adapter = null
+        textWatcher?.let { binding.search.removeTextChangedListener(it) }
+        _binding = null
+        super.onDestroyView()
+    }
+
+    private fun initTrackAdapters() {
         searchHistoryAdapter = TrackAdapter(
-            createDebouncedTrackClickListener{ track ->
-                startActivity(createPlayerActivityIntent(track))
+            createDebouncedTrackClickListener { track ->
+                navigateToPlayer(
+                    requireActivity().getNavController(R.id.fragmentContainer),
+                    track
+                )
             })
-
-        searchViewModel.observeSearchHistoryTracks().observe(this) {
+        searchViewModel.observeSearchHistoryTracks().observe(viewLifecycleOwner) {
             searchHistoryAdapter.trackList = it
         }
+        trackAdapter = TrackAdapter(
+            createDebouncedTrackClickListener { track ->
+                searchViewModel.addTrackToSearchHistory(track)
+                navigateToPlayer(
+                    requireActivity().getNavController(R.id.fragmentContainer),
+                    track
+                )
+            })
+    }
 
+    private fun navigateToPlayer(navController: NavController, track: Track) {
+        navController.navigate(
+            R.id.action_searchFragment_to_playerFragment,
+            PlayerFragment.createArgs(TrackMapper.mapToTrackParcelable(track))
+        )
+    }
+
+    private fun createDebouncedTrackClickListener(onTrackClickListener: TrackAdapter.OnTrackClickListener): TrackAdapter.OnTrackClickListener {
+        return TrackAdapter.OnTrackClickListener { track ->
+            if (searchViewModel.clickOnTrackAllowed) {
+                searchViewModel.trackClickDebounce()
+                onTrackClickListener.onTrackClick(track)
+            }
+        }
+    }
+
+    private fun setAdaptersToRecyclerView() {
         binding.historyTracks.adapter = searchHistoryAdapter
+        binding.tracks.adapter = trackAdapter
+    }
 
-        searchViewModel.observeSearchHistoryEvent().observe(this) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun attachObservers() {
+        searchViewModel.observeSearchHistoryEvent().observe(viewLifecycleOwner) {
             when (it) {
                 is SearchViewModel.SearchHistoryEvent.TrackInserted -> {
                     searchHistoryAdapter.notifyItemInserted(it.position)
-                    searchHistoryAdapter.notifyItemRangeChanged(it.position,
-                        searchHistoryAdapter.trackList.size)
+                    searchHistoryAdapter.notifyItemRangeChanged(
+                        it.position, searchHistoryAdapter.trackList.size
+                    )
                     binding.historyTracks.layoutManager?.scrollToPosition(0)
                 }
+
                 is SearchViewModel.SearchHistoryEvent.TrackRemoved -> {
                     searchHistoryAdapter.notifyItemRemoved(it.position)
                 }
+
                 is SearchViewModel.SearchHistoryEvent.TracksCleared -> {
                     searchHistoryAdapter.notifyItemRangeRemoved(0, it.count)
                 }
             }
         }
 
-        searchViewModel.observeSearchState().observe(this) {
+        searchViewModel.observeSearchState().observe(viewLifecycleOwner) {
             when (it) {
                 is SearchState.Error -> showMainView(binding.noInternet)
                 is SearchState.Empty -> showMainView(binding.searchEmpty)
@@ -78,24 +130,21 @@ class SearchActivity : AppCompatActivity() {
                     trackAdapter.notifyDataSetChanged()
                     showMainView(binding.tracks)
                 }
+
                 is SearchState.SearchHistory -> showMainView(binding.searchHistory)
                 is SearchState.Idle -> showMainView(null)
             }
         }
+    }
 
+    private fun setupListeners() {
         binding.historyClear.setOnClickListener {
             searchViewModel.clearSearchHistory()
         }
-        trackAdapter = TrackAdapter(
-            createDebouncedTrackClickListener { track ->
-                searchViewModel.addTrackToSearchHistory(track)
-                startActivity(createPlayerActivityIntent(track))
-            })
-        binding.tracks.adapter = trackAdapter
         binding.refresh.setOnClickListener {
             searchViewModel.doSearch(binding.search.text.toString())
         }
-        binding.search.setText(searchViewModel.searchValue)
+
         binding.search.onFocusChangeListener = createOnFocusChangeListener()
 
         binding.clearSearch.setOnClickListener {
@@ -106,36 +155,6 @@ class SearchActivity : AppCompatActivity() {
         textWatcher = createTextWatcher()
         textWatcher?.let {
             binding.search.addTextChangedListener(it)
-        }
-        binding.back.setOnClickListener { finish() }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        textWatcher?.let { binding.search.removeTextChangedListener(it) }
-    }
-
-    private fun hideKeyboard(view: View) {
-        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).apply {
-            this.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-        view.clearFocus()
-    }
-
-    private fun createTextWatcher(): TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.clearSearch.isVisible = !s.isNullOrEmpty()
-                searchViewModel.onTextChanged(s.toString(), binding.search.hasFocus(),
-                    binding.searchHistory.isVisible)
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-
         }
     }
 
@@ -151,21 +170,30 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun createDebouncedTrackClickListener(onTrackClickListener: TrackAdapter.OnTrackClickListener)
-    : TrackAdapter.OnTrackClickListener {
-        return TrackAdapter.OnTrackClickListener { track ->
-            if (searchViewModel.clickOnTrackAllowed) {
-                searchViewModel.trackClickDebounce()
-                onTrackClickListener.onTrackClick(track)
-            }
+    private fun hideKeyboard(view: View) {
+        (activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).apply {
+            this.hideSoftInputFromWindow(view.windowToken, 0)
         }
+        view.clearFocus()
     }
 
-    private fun createPlayerActivityIntent(track: Track): Intent {
-        return Intent(this@SearchActivity, PlayerActivity::class.java).apply {
-            this.putExtra(
-                PlayerActivity.Companion.INTENT_TRACK_EXTRA_KEY,
-                TrackMapper.mapToTrackParcelable(track))
+    private fun createTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.clearSearch.isVisible = !s.isNullOrEmpty()
+                searchViewModel.onTextChanged(
+                    s.toString(),
+                    binding.search.hasFocus(),
+                    binding.searchHistory.isVisible
+                )
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
         }
     }
 

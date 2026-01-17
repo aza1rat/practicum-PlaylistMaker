@@ -1,30 +1,32 @@
 package ru.aza1rat.playlistmaker.settings.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.aza1rat.playlistmaker.R
-import ru.aza1rat.playlistmaker.databinding.ActivitySettingsBinding
+import ru.aza1rat.playlistmaker.databinding.FragmentSettingsBinding
 import ru.aza1rat.playlistmaker.settings.ui.view_model.SettingsViewModel
+import kotlin.getValue
 
-class SettingsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySettingsBinding
+class SettingsFragment: Fragment() {
     private val settingsViewModel by viewModel<SettingsViewModel>()
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.share.setOnClickListener {
             settingsViewModel.shareApp(
                 getString(R.string.share_app_message)
@@ -42,14 +44,16 @@ class SettingsActivity : AppCompatActivity() {
                 getString(R.string.link_user_agreement)
             )
         }
-
-        settingsViewModel.observeDarkThemeEnabled().observe(this) {
+        settingsViewModel.observeDarkThemeEnabled().observe(viewLifecycleOwner) {
             binding.themeSwitcher.isChecked = it
         }
-
         binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             settingsViewModel.switchTheme(isChecked)
         }
-        binding.back.setOnClickListener { finish() }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

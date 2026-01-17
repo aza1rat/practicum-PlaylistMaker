@@ -7,16 +7,11 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".settings.ui.SettingsActivity">
+    tools:context=".settings.ui.SettingsFragment">
 
     <FrameLayout style="@style/HeaderFrameLayout">
-
-        <ImageButton
-            android:id="@+id/back"
-            style="@style/HeaderBackImageButton" />
-
         <com.google.android.material.textview.MaterialTextView
-            style="@style/HeaderTextView"
+            style="@style/HeaderWithoutNavigationTextView"
             android:text="@string/settings" />
     </FrameLayout>
 

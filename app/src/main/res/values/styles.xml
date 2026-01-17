@@ -62,6 +62,10 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="HeaderWithoutNavigationTextView" parent="HeaderTextView">
+        <item name="android:layout_marginStart">12dp</item>
+    </style>
+
     <style name="MainLayoutBackground">
         <item name="android:background">@color/blue</item>
     </style>
@@ -220,5 +224,11 @@
 
     <style name="AllCapsTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="BottomNavigationActiveTextAppearance" parent="TextAppearance.AppCompat.Menu">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>
