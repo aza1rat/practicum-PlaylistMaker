@@ -1,10 +1,12 @@
 package ru.aza1rat.playlistmaker.player.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
 import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
@@ -17,19 +19,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     fun observePlayerState(): LiveData<PlayerState> = playerState
     private val progressFormatter = SimpleDateFormat("mm:ss", Locale.getDefault())
     private var progressPlaying: String = formatProgress(0)
-    private val handler = Handler(Looper.getMainLooper())
-    private val progressCheckTask = object : Runnable {
-        override fun run() {
-            progressPlaying = formatProgress(playerInteractor.getCurrentPosition())
-            val state = playerInteractor.getCurrentState()
-            if (state == MediaPlayerState.PLAYING) {
-                playerState.value = PlayerState.Playing(progressPlaying)
-                handler.postDelayed(this, PROGRESS_CHECK_DELAY)
-            }
-            if (state == MediaPlayerState.PAUSED)
-                playerState.value = PlayerState.Paused(progressPlaying)
-        }
-    }
+    private var progressCheckJob: Job? = null
 
     init {
         playerInteractor.setOnPlayerStateChangeListener(object : PlayerRepository.PlayerStateChangeListener {
@@ -39,16 +29,15 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
                         playerState.value = PlayerState.Prepared
                     }
                     MediaPlayerState.COMPLETED -> {
-                        handler.removeCallbacks(progressCheckTask)
+                        progressCheckJob?.cancel()
                         progressPlaying = formatProgress(0)
                         playerState.value = PlayerState.Completed
                     }
                     MediaPlayerState.PLAYING -> {
-                        handler.postDelayed(progressCheckTask, PROGRESS_CHECK_DELAY)
-                        playerState.value = PlayerState.Playing(progressPlaying)
+                        startProgressCheckJob()
                     }
                     MediaPlayerState.PAUSED -> {
-                        handler.removeCallbacks(progressCheckTask)
+                        progressCheckJob?.cancel()
                         playerState.value = PlayerState.Paused(progressPlaying)
                     }
                     MediaPlayerState.DEFAULT -> {
@@ -82,13 +71,22 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     override fun onCleared() {
         playerInteractor.release()
-        handler.removeCallbacks(progressCheckTask)
         super.onCleared()
     }
 
     private fun formatProgress(progress: Int): String = progressFormatter.format(progress)
 
+    private fun startProgressCheckJob() {
+        progressCheckJob = viewModelScope.launch {
+            while(playerInteractor.getCurrentState() == MediaPlayerState.PLAYING) {
+                progressPlaying = formatProgress(playerInteractor.getCurrentPosition())
+                playerState.value = PlayerState.Playing(progressPlaying)
+                delay(PROGRESS_CHECK_DELAY)
+            }
+        }
+    }
+
     companion object {
-        private const val PROGRESS_CHECK_DELAY = 400L
+        private const val PROGRESS_CHECK_DELAY = 300L
     }
 }

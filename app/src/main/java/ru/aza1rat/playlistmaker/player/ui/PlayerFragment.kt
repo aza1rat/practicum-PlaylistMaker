@@ -25,9 +25,10 @@ class PlayerFragment : Fragment() {
     private val binding get() = _binding!!
     private val playerViewModel: PlayerViewModel by viewModel<PlayerViewModel>()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -83,17 +84,14 @@ class PlayerFragment : Fragment() {
                     binding.play.setImageResource(R.drawable.ic_play_84)
                     binding.progressPlaying.text = getString(R.string.placeholder_progress_playing)
                 }
-
                 is PlayerState.Paused -> {
                     binding.play.setImageResource(R.drawable.ic_play_84)
                     binding.progressPlaying.text = it.progress
                 }
-
                 is PlayerState.Playing -> {
                     binding.play.setImageResource(R.drawable.ic_pause_84)
                     binding.progressPlaying.text = it.progress
                 }
-
                 else -> {}
             }
         }

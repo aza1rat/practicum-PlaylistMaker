@@ -12,10 +12,13 @@ import ru.aza1rat.playlistmaker.databinding.ActivityMainBinding
 import ru.aza1rat.playlistmaker.util.ui.getNavController
 
 class MainActivity : AppCompatActivity() {
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
@@ -26,9 +29,18 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerFragment -> binding.bottomNavigation.isVisible = false
-                else -> binding.bottomNavigation.isVisible = true
+                R.id.playerFragment -> {
+                    setVisibilityToBottomNavigation(false)
+                }
+                else -> {
+                    setVisibilityToBottomNavigation(true)
+                }
             }
         }
+    }
+
+    private fun setVisibilityToBottomNavigation(isVisible: Boolean) {
+        binding.bottomNavigation.isVisible = isVisible
+        binding.bottomNavigationDivider.isVisible = isVisible
     }
 }

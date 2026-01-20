@@ -34,7 +34,7 @@ class SearchFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -109,11 +109,9 @@ class SearchFragment : Fragment() {
                     )
                     binding.historyTracks.layoutManager?.scrollToPosition(0)
                 }
-
                 is SearchViewModel.SearchHistoryEvent.TrackRemoved -> {
                     searchHistoryAdapter.notifyItemRemoved(it.position)
                 }
-
                 is SearchViewModel.SearchHistoryEvent.TracksCleared -> {
                     searchHistoryAdapter.notifyItemRangeRemoved(0, it.count)
                 }
@@ -130,7 +128,6 @@ class SearchFragment : Fragment() {
                     trackAdapter.notifyDataSetChanged()
                     showMainView(binding.tracks)
                 }
-
                 is SearchState.SearchHistory -> showMainView(binding.searchHistory)
                 is SearchState.Idle -> showMainView(null)
             }
@@ -144,9 +141,7 @@ class SearchFragment : Fragment() {
         binding.refresh.setOnClickListener {
             searchViewModel.doSearch(binding.search.text.toString())
         }
-
         binding.search.onFocusChangeListener = createOnFocusChangeListener()
-
         binding.clearSearch.setOnClickListener {
             binding.search.text.clear()
             hideKeyboard(binding.search)
@@ -179,9 +174,6 @@ class SearchFragment : Fragment() {
 
     private fun createTextWatcher(): TextWatcher {
         return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearSearch.isVisible = !s.isNullOrEmpty()
                 searchViewModel.onTextChanged(
@@ -190,10 +182,8 @@ class SearchFragment : Fragment() {
                     binding.searchHistory.isVisible
                 )
             }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
         }
     }
 

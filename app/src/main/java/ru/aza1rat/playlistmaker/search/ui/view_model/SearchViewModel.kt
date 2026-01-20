@@ -1,31 +1,32 @@
 package ru.aza1rat.playlistmaker.search.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryInteractor
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryRepository
 import ru.aza1rat.playlistmaker.search.domain.api.TrackInteractor
 import ru.aza1rat.playlistmaker.search.domain.model.Track
 import ru.aza1rat.playlistmaker.search.ui.model.SearchState
 import ru.aza1rat.playlistmaker.util.ui.SingleLiveEvent
+import ru.aza1rat.playlistmaker.util.ui.debounce
 
-class SearchViewModel (
+class SearchViewModel(
     private val trackInteractor: TrackInteractor,
     private val searchHistoryInteractor: SearchHistoryInteractor
-) : ViewModel()
-{
+) : ViewModel() {
     var searchValue = ""
         private set
     var clickOnTrackAllowed = true
         private set
-    private val handler = Handler(Looper.getMainLooper())
-    private val sendRequestTask = Runnable {
-            if (searchValue.isNotEmpty() && searchValue.isNotBlank()) {
-                doSearch(searchValue)
-            }
+    private val searchDebounce = debounce<String>(REQUEST_DELAY, viewModelScope, true) { query ->
+        if (query.isNotEmpty() && query.isNotBlank()) doSearch(query)
+    }
+    private val allowClickOnTrackDebounce =
+        debounce<Boolean>(TRACK_CLICK_DEBOUNCE_DELAY, viewModelScope, false) {
+            this.clickOnTrackAllowed = true
         }
     private val searchHistoryEvent = SingleLiveEvent<SearchHistoryEvent>()
     fun observeSearchHistoryEvent(): LiveData<SearchHistoryEvent> = searchHistoryEvent
@@ -36,11 +37,6 @@ class SearchViewModel (
 
     init {
         searchHistoryTracks.value = searchHistoryInteractor.get() as ArrayList<Track>
-    }
-
-    override fun onCleared() {
-        handler.removeCallbacks(sendRequestTask)
-        super.onCleared()
     }
 
     fun addTrackToSearchHistory(track: Track) {
@@ -54,6 +50,7 @@ class SearchViewModel (
             }
         })
     }
+
     fun clearSearchHistory() {
         searchHistoryEvent.value = SearchHistoryEvent.TracksCleared(searchHistoryInteractor.clear())
         searchState.value = SearchState.Idle
@@ -61,42 +58,36 @@ class SearchViewModel (
 
     fun doSearch(query: String) {
         searchState.value = SearchState.Loading
-        trackInteractor.searchTracks(query, object : TrackInteractor.TrackConsumer {
-            override fun consume(foundTracks: List<Track>?) {
-                if (foundTracks == null) {
-                    searchState.postValue(SearchState.Error)
-                }
+        viewModelScope.launch {
+            trackInteractor.searchTracks(query).collect { tracks ->
+                if (tracks == null) searchState.postValue(SearchState.Error)
                 else {
-                    if (foundTracks.isNotEmpty()) {
-                        searchState.postValue(SearchState.TracksContent(foundTracks))
-                    }
-                    else
-                        searchState.postValue(SearchState.Empty)
+                    if (tracks.isNotEmpty()) {
+                        searchState.postValue(SearchState.TracksContent(tracks))
+                    } else searchState.postValue(SearchState.Empty)
                 }
             }
-
-        })
+        }
     }
+
     fun onTextChanged(query: String, textHasFocus: Boolean, searchHistoryVisible: Boolean) {
         if (searchValue == query) return
         searchValue = query
         if (query.isEmpty() && textHasFocus && searchHistoryInteractor.get().isNotEmpty())
             searchState.value = SearchState.SearchHistory
-        if (searchHistoryVisible && query.isNotEmpty())
-            searchState.value = SearchState.Idle
-        handler.removeCallbacks(sendRequestTask)
-        handler.postDelayed(sendRequestTask, REQUEST_DELAY)
+        if (searchHistoryVisible && query.isNotEmpty()) searchState.value = SearchState.Idle
+        searchDebounce.invoke(query)
     }
 
     fun trackClickDebounce() {
         clickOnTrackAllowed = false
-        handler.postDelayed({clickOnTrackAllowed = true}, TRACK_CLICK_DEBOUNCE_DELAY)
+        allowClickOnTrackDebounce.invoke(true)
     }
 
     sealed interface SearchHistoryEvent {
         data class TrackInserted(val position: Int) : SearchHistoryEvent
         data class TrackRemoved(val position: Int) : SearchHistoryEvent
-        data class TracksCleared(val count: Int): SearchHistoryEvent
+        data class TracksCleared(val count: Int) : SearchHistoryEvent
     }
 
     companion object {
