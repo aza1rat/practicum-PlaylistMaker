@@ -22,6 +22,6 @@ data class TrackEntity (
     val country: String,
     @ColumnInfo(name = "preview_url")
     val previewUrl: String?,
-    @ColumnInfo(name = "added_at", defaultValue = "CURRENT_TIMESTAMP")
-    var addedAt: String = ""
+    @ColumnInfo(name = "added_at", defaultValue = "(strftime('%s', 'now'))")
+    var addedAt: Long
 )

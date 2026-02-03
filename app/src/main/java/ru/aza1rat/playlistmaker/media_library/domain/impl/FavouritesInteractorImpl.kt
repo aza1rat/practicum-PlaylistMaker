@@ -10,8 +10,8 @@ class FavouritesInteractorImpl(private val repository: FavouritesRepository): Fa
         repository.add(track)
     }
 
-    override suspend fun delete(track: Track) {
-        repository.delete(track)
+    override suspend fun delete(id: Int) {
+        repository.delete(id)
     }
 
     override fun list(): Flow<List<Track>> {

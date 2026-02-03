@@ -22,6 +22,7 @@ import ru.aza1rat.playlistmaker.search.ui.mapper.TrackMapper
 import ru.aza1rat.playlistmaker.search.ui.model.SearchState
 import ru.aza1rat.playlistmaker.search.ui.view_model.SearchViewModel
 import ru.aza1rat.playlistmaker.util.ui.getNavController
+import ru.aza1rat.playlistmaker.util.ui.showMainView
 import kotlin.getValue
 
 class SearchFragment : Fragment() {
@@ -29,6 +30,8 @@ class SearchFragment : Fragment() {
     private var textWatcher: TextWatcher? = null
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var searchHistoryAdapter: TrackAdapter
+    private var _showContent: ((View?) -> Unit)? = null
+    private val showContent get() = _showContent!!
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -41,6 +44,13 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _showContent = showMainView(
+            binding.tracks,
+            binding.searchEmpty,
+            binding.noInternet,
+            binding.searchHistory,
+            binding.requestProgress
+        )
         initTrackAdapters()
         setAdaptersToRecyclerView()
         attachObservers()
@@ -52,6 +62,7 @@ class SearchFragment : Fragment() {
         binding.tracks.adapter = null
         binding.historyTracks.adapter = null
         textWatcher?.let { binding.search.removeTextChangedListener(it) }
+        _showContent = null
         _binding = null
         super.onDestroyView()
     }
@@ -60,8 +71,7 @@ class SearchFragment : Fragment() {
         searchHistoryAdapter = TrackAdapter(
             createDebouncedTrackClickListener { track ->
                 navigateToPlayer(
-                    requireActivity().getNavController(R.id.fragmentContainer),
-                    track
+                    requireActivity().getNavController(R.id.fragmentContainer), track
                 )
             })
         searchViewModel.observeSearchHistoryTracks().observe(viewLifecycleOwner) {
@@ -71,8 +81,7 @@ class SearchFragment : Fragment() {
             createDebouncedTrackClickListener { track ->
                 searchViewModel.addTrackToSearchHistory(track)
                 navigateToPlayer(
-                    requireActivity().getNavController(R.id.fragmentContainer),
-                    track
+                    requireActivity().getNavController(R.id.fragmentContainer), track
                 )
             })
     }
@@ -109,9 +118,11 @@ class SearchFragment : Fragment() {
                     )
                     binding.historyTracks.layoutManager?.scrollToPosition(0)
                 }
+
                 is SearchViewModel.SearchHistoryEvent.TrackRemoved -> {
                     searchHistoryAdapter.notifyItemRemoved(it.position)
                 }
+
                 is SearchViewModel.SearchHistoryEvent.TracksCleared -> {
                     searchHistoryAdapter.notifyItemRangeRemoved(0, it.count)
                 }
@@ -120,16 +131,17 @@ class SearchFragment : Fragment() {
 
         searchViewModel.observeSearchState().observe(viewLifecycleOwner) {
             when (it) {
-                is SearchState.Error -> showMainView(binding.noInternet)
-                is SearchState.Empty -> showMainView(binding.searchEmpty)
-                is SearchState.Loading -> showMainView(binding.requestProgress)
+                is SearchState.Error -> showContent.invoke(binding.noInternet)
+                is SearchState.Empty -> showContent.invoke(binding.searchEmpty)
+                is SearchState.Loading -> showContent.invoke(binding.requestProgress)
                 is SearchState.TracksContent -> {
                     trackAdapter.trackList = it.tracks
                     trackAdapter.notifyDataSetChanged()
-                    showMainView(binding.tracks)
+                    showContent.invoke(binding.tracks)
                 }
-                is SearchState.SearchHistory -> showMainView(binding.searchHistory)
-                is SearchState.Idle -> showMainView(null)
+
+                is SearchState.SearchHistory -> showContent.invoke(binding.searchHistory)
+                is SearchState.Idle -> showContent.invoke(null)
             }
         }
     }
@@ -145,7 +157,7 @@ class SearchFragment : Fragment() {
         binding.clearSearch.setOnClickListener {
             binding.search.text.clear()
             hideKeyboard(binding.search)
-            showMainView(null)
+            showContent.invoke(null)
         }
         textWatcher = createTextWatcher()
         textWatcher?.let {
@@ -157,7 +169,7 @@ class SearchFragment : Fragment() {
         return View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.search.text.isNullOrEmpty()) {
                 if (searchHistoryAdapter.trackList.isNotEmpty()) {
-                    showMainView(binding.searchHistory)
+                    showContent.invoke(binding.searchHistory)
                 }
             } else {
                 binding.searchHistory.isVisible = false
@@ -177,21 +189,14 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clearSearch.isVisible = !s.isNullOrEmpty()
                 searchViewModel.onTextChanged(
-                    s.toString(),
-                    binding.search.hasFocus(),
-                    binding.searchHistory.isVisible
+                    s.toString(), binding.search.hasFocus(), binding.searchHistory.isVisible
                 )
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
         }
     }
 
-    private fun showMainView(view: View?) {
-        binding.tracks.apply { this.isVisible = this == view }
-        binding.searchEmpty.apply { this.isVisible = this == view }
-        binding.noInternet.apply { this.isVisible = this == view }
-        binding.searchHistory.apply { this.isVisible = this == view }
-        binding.requestProgress.apply { this.isVisible = this == view }
-    }
+
 }

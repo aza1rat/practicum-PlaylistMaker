@@ -1,11 +1,13 @@
 package ru.aza1rat.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
+import ru.aza1rat.playlistmaker.db.data.dao.TrackDao
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
 import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
 
 class PlayerRepositoryImpl(
     private val mediaPlayer: MediaPlayer,
+    private val trackDao: TrackDao,
     private var onPlayerStateChangeListener: PlayerRepository.PlayerStateChangeListener? = null
 ): PlayerRepository {
     private var currentState: MediaPlayerState = MediaPlayerState.DEFAULT
@@ -48,6 +50,10 @@ class PlayerRepositoryImpl(
 
     override fun getCurrentState(): MediaPlayerState {
         return currentState
+    }
+
+    override suspend fun trackIsFavourite(trackId: Int): Boolean {
+        return trackDao.getTracksCountById(trackId) > 0
     }
 
     private fun changeState(state: MediaPlayerState) {

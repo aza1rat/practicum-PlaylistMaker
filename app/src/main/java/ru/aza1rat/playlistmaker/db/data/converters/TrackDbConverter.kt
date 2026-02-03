@@ -1,6 +1,5 @@
 package ru.aza1rat.playlistmaker.db.data.converters
 
-import ru.aza1rat.playlistmaker.db.data.entity.TrackEntity
 import ru.aza1rat.playlistmaker.db.data.model.TrackDbModel
 import ru.aza1rat.playlistmaker.search.domain.model.Track
 

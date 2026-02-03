@@ -1,7 +1,6 @@
 package ru.aza1rat.playlistmaker.db.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,8 +12,18 @@ import ru.aza1rat.playlistmaker.db.data.model.TrackDbModel
 interface TrackDao {
     @Insert(entity = TrackEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrack(track: TrackDbModel)
-    @Delete(TrackEntity::class)
-    suspend fun deleteTrack(track: TrackDbModel)
+
+    @Query("DELETE FROM track WHERE id = :id")
+    suspend fun deleteTrack(id: Int)
+
     @Query("SELECT * FROM track ORDER BY added_at DESC")
-    fun getTracksByAddedAt(): Flow<List<TrackDbModel>>
+    fun getTracksOrderedByAdding(): Flow<List<TrackDbModel>>
+
+    @Query("SELECT COUNT(*) FROM track WHERE id = :id")
+    suspend fun getTracksCountById(id: Int): Int
+
+    @Deprecated("По требованию этот метод должен использоваться при поиске треков. " +
+            "Используйте getTracksCountById на экране плеера чтобы убедиться, что трек действительно находится в избранном")
+    @Query("SELECT id FROM track")
+    suspend fun getTracksIds(): List<Int>
 }

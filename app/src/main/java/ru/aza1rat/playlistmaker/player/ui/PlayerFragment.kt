@@ -43,8 +43,8 @@ class PlayerFragment : Fragment() {
         val track = TrackUIMapper.mapToTrack(trackUI)
         bindData(track)
         attachObservers()
-        playerViewModel.preparePlayer(track.previewUrl ?: "")
-        setupListeners()
+        playerViewModel.preparePlayer(track.previewUrl ?: "", track.trackId)
+        setupListeners(track)
     }
 
     override fun onPause() {
@@ -78,7 +78,13 @@ class PlayerFragment : Fragment() {
 
     private fun attachObservers() {
         playerViewModel.observePlayerState().observe(viewLifecycleOwner) {
-            binding.play.isEnabled = it != PlayerState.NotReady
+            if (it.trackIsFavourite) {
+                binding.favorite.setImageResource(R.drawable.ic_favourite_active_25x23)
+            }
+            else {
+                binding.favorite.setImageResource(R.drawable.ic_favorite_25x23)
+            }
+            binding.play.isEnabled = it !is PlayerState.NotReady
             when (it) {
                 is PlayerState.Completed -> {
                     binding.play.setImageResource(R.drawable.ic_play_84)
@@ -97,9 +103,12 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun setupListeners() {
+    private fun setupListeners(track: Track) {
         binding.play.setOnClickListener {
-            playerViewModel.playOrPause()
+            playerViewModel.togglePlay()
+        }
+        binding.favorite.setOnClickListener {
+            playerViewModel.toggleFavourite(track)
         }
         binding.back.setOnClickListener {
             requireActivity().getNavController(R.id.fragmentContainer).navigateUp()

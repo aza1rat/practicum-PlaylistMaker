@@ -5,6 +5,6 @@ import ru.aza1rat.playlistmaker.search.domain.model.Track
 
 interface FavouritesInteractor {
     suspend fun add(track: Track)
-    suspend fun delete(track: Track)
+    suspend fun delete(id: Int)
     fun list(): Flow<List<Track>>
 }

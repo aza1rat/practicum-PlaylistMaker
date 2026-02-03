@@ -11,6 +11,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.aza1rat.playlistmaker.db.data.AppDatabase
+import ru.aza1rat.playlistmaker.db.data.dao.TrackDao
 import ru.aza1rat.playlistmaker.history.data.SharedPrefsStorageClient
 import ru.aza1rat.playlistmaker.history.data.StorageClient
 import ru.aza1rat.playlistmaker.search.data.NetworkClient
@@ -60,6 +61,10 @@ val dataModule = module {
 
     factory<MediaPlayer> {
         MediaPlayer()
+    }
+
+    single<TrackDao> {
+        get<AppDatabase>().getTrackDao()
     }
 
     single<AppDatabase> {

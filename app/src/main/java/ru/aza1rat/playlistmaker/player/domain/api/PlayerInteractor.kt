@@ -10,4 +10,5 @@ interface PlayerInteractor {
     fun getCurrentPosition(): Int
     fun release()
     fun getCurrentState(): MediaPlayerState
+    suspend fun trackIsFavourite(trackId: Int): Boolean
 }

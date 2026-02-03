@@ -23,7 +23,7 @@ val repositoryModule = module {
     }
 
     factory<TrackRepository> {
-        TrackRepositoryImpl(get())
+        TrackRepositoryImpl(get(),get())
     }
 
     single<SearchHistoryRepository> {
@@ -31,7 +31,7 @@ val repositoryModule = module {
     }
 
     factory<PlayerRepository> {
-        PlayerRepositoryImpl(get())
+        PlayerRepositoryImpl(get(),get())
     }
 
     factory<ExternalNavigator> {

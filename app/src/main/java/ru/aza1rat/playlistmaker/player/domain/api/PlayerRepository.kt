@@ -10,6 +10,7 @@ interface PlayerRepository {
     fun getCurrentPosition(): Int
     fun release()
     fun getCurrentState(): MediaPlayerState
+    suspend fun trackIsFavourite(trackId: Int): Boolean
 
     interface PlayerStateChangeListener {
         fun onPlayerStateChanged(state: MediaPlayerState)
