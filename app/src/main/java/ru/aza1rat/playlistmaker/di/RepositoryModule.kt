@@ -1,7 +1,6 @@
 package ru.aza1rat.playlistmaker.di
 
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.factory
 import org.koin.dsl.module
 import ru.aza1rat.playlistmaker.db.data.converters.TrackDbConverter
 import ru.aza1rat.playlistmaker.history.data.impl.SearchHistoryRepositoryImpl
