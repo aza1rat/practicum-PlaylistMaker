@@ -21,9 +21,4 @@ interface TrackDao {
 
     @Query("SELECT COUNT(*) FROM track WHERE id = :id")
     suspend fun getTracksCountById(id: Int): Int
-
-    @Deprecated("По требованию этот метод должен использоваться при поиске треков. " +
-            "Используйте getTracksCountById на экране плеера чтобы убедиться, что трек действительно находится в избранном")
-    @Query("SELECT id FROM track")
-    suspend fun getTracksIds(): List<Int>
 }
