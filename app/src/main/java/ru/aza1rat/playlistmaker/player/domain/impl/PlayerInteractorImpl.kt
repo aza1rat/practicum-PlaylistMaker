@@ -32,4 +32,8 @@ class PlayerInteractorImpl(private val repository: PlayerRepository): PlayerInte
     override fun getCurrentState(): MediaPlayerState {
         return repository.getCurrentState()
     }
+
+    override suspend fun trackIsFavourite(trackId: Int): Boolean {
+        return repository.trackIsFavourite(trackId)
+    }
 }

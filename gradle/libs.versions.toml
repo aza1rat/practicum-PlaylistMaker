@@ -18,7 +18,9 @@ constraintlayout = "2.2.1"
 viewpager2 = "1.0.0"
 retrofit = "2.9.0"
 glide = "4.16.0"
+room = "2.5.1"
 koin = "3.3.0"
+ksp = "2.0.21-1.0.28"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -38,9 +40,13 @@ androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", vers
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide"}
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
 retrofit-gson-factory = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref  = "room" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref="koin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

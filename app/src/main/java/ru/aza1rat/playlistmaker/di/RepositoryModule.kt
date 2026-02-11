@@ -2,8 +2,11 @@ package ru.aza1rat.playlistmaker.di
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import ru.aza1rat.playlistmaker.db.data.converters.TrackDbConverter
 import ru.aza1rat.playlistmaker.history.data.impl.SearchHistoryRepositoryImpl
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryRepository
+import ru.aza1rat.playlistmaker.media_library.data.FavouritesRepositoryImpl
+import ru.aza1rat.playlistmaker.media_library.domain.api.FavouritesRepository
 import ru.aza1rat.playlistmaker.player.data.impl.PlayerRepositoryImpl
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
 import ru.aza1rat.playlistmaker.search.data.impl.TrackRepositoryImpl
@@ -19,7 +22,7 @@ val repositoryModule = module {
     }
 
     factory<TrackRepository> {
-        TrackRepositoryImpl(get())
+        TrackRepositoryImpl(get(),get())
     }
 
     single<SearchHistoryRepository> {
@@ -27,10 +30,18 @@ val repositoryModule = module {
     }
 
     factory<PlayerRepository> {
-        PlayerRepositoryImpl(get())
+        PlayerRepositoryImpl(get(),get())
     }
 
     factory<ExternalNavigator> {
         ExternalNavigatorImpl(context = androidContext())
+    }
+
+    factory {
+        TrackDbConverter()
+    }
+
+    factory<FavouritesRepository> {
+        FavouritesRepositoryImpl(get(), get())
     }
 }

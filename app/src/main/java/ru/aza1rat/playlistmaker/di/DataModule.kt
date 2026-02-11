@@ -3,12 +3,15 @@ package ru.aza1rat.playlistmaker.di
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.media.MediaPlayer
+import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.aza1rat.playlistmaker.db.data.AppDatabase
+import ru.aza1rat.playlistmaker.db.data.dao.TrackDao
 import ru.aza1rat.playlistmaker.history.data.SharedPrefsStorageClient
 import ru.aza1rat.playlistmaker.history.data.StorageClient
 import ru.aza1rat.playlistmaker.search.data.NetworkClient
@@ -58,5 +61,13 @@ val dataModule = module {
 
     factory<MediaPlayer> {
         MediaPlayer()
+    }
+
+    single<TrackDao> {
+        get<AppDatabase>().getTrackDao()
+    }
+
+    single<AppDatabase> {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db").build()
     }
 }
