@@ -28,11 +28,11 @@
     <dimen name="search_refresh_padding">6dp</dimen>
     <dimen name="search_illustration_size">120dp</dimen>
     <dimen name="search_space">24dp</dimen>
-    <dimen name="search_indent_vertical">16dp</dimen>
+    <dimen name="layout_indent_vertical">16dp</dimen>
     <dimen name="search_progress_size">44dp</dimen>
-    <dimen name="player_indent">24dp</dimen>
+    <dimen name="guideline_24">24dp</dimen>
     <dimen name="player_indent_bottom">20dp</dimen>
-    <dimen name="player_info_indent">16dp</dimen>
+    <dimen name="guideline_16">16dp</dimen>
     <dimen name="player_space">30dp</dimen>
     <dimen name="player_control_indent_top">54dp</dimen>
     <dimen name="player_subtext_size">14sp</dimen>
@@ -43,4 +43,11 @@
     <dimen name="search_indent_top">2dp</dimen>
     <dimen name="media_library_illustration_indent_top">106dp</dimen>
     <dimen name="media_library_label_indent_top">136dp</dimen>
+    <dimen name="cover_main_indent_top">82dp</dimen>
+    <dimen name="playlist_outer_indent_bottom">32dp</dimen>
+    <dimen name="media_library_indent_horizontal">12dp</dimen>
+    <dimen name="item_playlist_content_indent_vertical">4dp</dimen>
+    <dimen name="playlist_input_padding_horizontal">16dp</dimen>
+    <dimen name="playlist_input_padding_top">18dp</dimen>
+    <dimen name="playlist_input_padding_bottom">19dp</dimen>
 </resources>

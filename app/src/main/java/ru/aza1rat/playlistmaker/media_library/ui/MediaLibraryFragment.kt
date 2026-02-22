@@ -37,6 +37,7 @@ class MediaLibraryFragment: Fragment() {
     }
 
     override fun onDestroyView() {
+        binding.libraryPager.adapter = null
         _binding = null
         tabMediator.detach()
         super.onDestroyView()

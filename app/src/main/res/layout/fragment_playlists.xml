@@ -2,11 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
-   >
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorMainBackground">
 
     <Button
-        style="@style/SearchRefreshButton"
+        android:id="@+id/newPlaylist"
+        style="@style/LittleRoundedButton"
         android:text="@string/media_library_playlists_create"
         android:layout_marginTop="@dimen/header_space"/>
 
@@ -14,17 +16,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/emptyPlaylists"
-        android:layout_marginTop="@dimen/media_library_illustration_indent_top">
+        android:layout_marginTop="@dimen/media_library_illustration_indent_top"
+        tools:visibility="gone">
 
         <ImageView style="@style/DayNightEmptyImageView"/>
 
         <TextView
-            style="@style/SearchTextView"
+            style="@style/InfoHintTextView"
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/media_library_label_indent_top"
             android:text="@string/media_library_playlists_empty" />
 
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlists"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="76dp"
+        android:paddingHorizontal="@dimen/media_library_indent_horizontal"
+        tools:listitem="@layout/item_playlist"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        />
+
 
 </FrameLayout>

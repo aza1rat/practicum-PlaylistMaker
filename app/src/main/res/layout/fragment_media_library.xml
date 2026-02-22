@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorPrimary"
+    android:background="?attr/colorMainBackground"
     tools:context=".media_library.ui.MediaLibraryFragment">
 
     <FrameLayout style="@style/HeaderFrameLayout">
@@ -23,7 +23,7 @@
         android:layout_marginHorizontal="@dimen/media_library_horizontal_indent"
         android:id="@+id/libraryTabs"
         app:tabIndicatorColor="?attr/colorOnPrimary"
-        android:backgroundTint="?attr/colorPrimary"
+        android:backgroundTint="?attr/colorMainBackground"
         app:tabTextColor="?attr/colorOnPrimary"
         app:tabIndicatorHeight="@dimen/tab_height"
         app:tabTextAppearance="@style/AllCapsTextAppearance"

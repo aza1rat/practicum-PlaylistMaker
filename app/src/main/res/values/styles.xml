@@ -5,6 +5,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:letterSpacing">0</item>
         <item name="textAllCaps">false</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
 
     <style name="BaseTextView" parent="Widget.MaterialComponents.TextView">
@@ -54,7 +56,7 @@
         <item name="android:clickable">true</item>
         <item name="tint">?attr/colorOnPrimary</item>
         <item name="android:src">@drawable/ic_arrow_back_24</item>
-        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:backgroundTint">?attr/colorMainBackground</item>
     </style>
 
     <style name="HeaderTextView" parent="TitleTextView">
@@ -109,7 +111,7 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="android:textFontWeight">400</item>
-        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="backgroundTint">?attr/colorMainBackground</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="background">@null</item>
@@ -121,13 +123,21 @@
         <item name="trackTint">@color/light_gray</item>
         <item name="thumbTint">@color/text_gray</item>
     </style>
+
+    <style name="SingleLineRegularAppearance">
+        <item name="android:maxLines">1</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="SingleLineMediumAppearance" parent="SingleLineRegularAppearance">
+        <item name="fontFamily">@font/ys_display_medium</item>
+    </style>
     
     <style name="SearchTrackTextView" parent="DayNightTextColor">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:ellipsize">end</item>
-        <item name="fontFamily">@font/ys_display_regular</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:textFontWeight">400</item>
+        <item name="android:textAppearance">@style/SingleLineRegularAppearance</item>
         <item name="android:textSize">@dimen/search_track_info_text_size</item>
     </style>
 
@@ -143,14 +153,14 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
-    <style name="SearchTextView" parent="BaseTextView">
+    <style name="InfoHintTextView" parent="BaseTextView">
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">19sp</item>
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="SearchErrorTextView" parent="SearchTextView">
+    <style name="SearchErrorTextView" parent="InfoHintTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingHorizontal">24dp</item>
         <item name="android:paddingTop">138dp</item>
@@ -158,12 +168,12 @@
         <item name="fontWeight">400</item>
     </style>
 
-    <style name="SearchHistoryTextView" parent="SearchTextView">
+    <style name="SearchHistoryTextView" parent="InfoHintTextView">
         <item name="android:layout_width">match_parent</item>
         <item name="fontWeight">500</item>
     </style>
 
-    <style name="SearchRefreshButton" parent="BaseButtonUnelevated">
+    <style name="LittleRoundedButton" parent="BaseButtonUnelevated">
         <item name="android:layout_height">36dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
@@ -176,22 +186,19 @@
         <item name="android:paddingVertical">10dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:backgroundTint">?attr/colorOnPrimary</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorMainBackground</item>
         <item name="cornerRadius">54dp</item>
     </style>
 
-    <style name="PlayerCoverRounded" parent="BaseRounded">
+    <style name="CoverRounded" parent="BaseRounded">
         <item name="cornerRadius">8dp</item>
     </style>
     
     <style name="PlayerMainTextView" parent="BaseTextView">
         <item name="android:layout_width">0dp</item>
         <item name="android:gravity">start|center_vertical</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:textAppearance">@style/SingleLineMediumAppearance</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textFontWeight">400</item>
     </style>
 
     <style name="PlayerRegularTitleTextView" parent="BaseTextView">
@@ -206,10 +213,9 @@
 
     <style name="PlayerRegularValueTextView" parent="PlayerRegularTitleTextView">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_marginStart">@dimen/player_info_indent</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginStart">@dimen/guideline_16</item>
         <item name="android:textAlignment">viewEnd</item>
+        <item name="android:textAppearance">@style/SingleLineRegularAppearance</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="layout_constraintWidth">wrap_content_constrained</item>
         <item name="layout_constraintHorizontal_bias">1</item>
@@ -230,5 +236,59 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="CoverMainShapeableImageView">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="shapeAppearance">@style/CoverRounded</item>
+        <item name="layout_constraintDimensionRatio">h,1:1</item>
+        <item name="android:layout_marginTop">@dimen/cover_main_indent_top</item>
+    </style>
+
+    <style name="BottomButton" parent="BaseButtonUnelevated">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="background">@drawable/bg_rounded_rectangle</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/regular_text_size</item>
+    </style>
+
+    <style name="PlayerSheetTitle" parent="InfoHintTextView">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="ItemPlaylistTextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/SingleLineRegularAppearance</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">16dp</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+    
+    <style name="CreatePlaylistInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/create_playlist_hint_color</item>
+        <item name="android:radius">4dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="hintTextAppearance">@style/CreatePlaylistInputLayout.Hint</item>
+        <item name="android:textColorHint">?attr/colorOnPrimary</item>
+        <item name="hintTextColor">@color/create_playlist_hint_color</item>
+        <item name="android:textAppearance">@style/SingleLineRegularAppearance</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">16dp</item>
+    </style>
+
+    <style name="CreatePlaylistInputLayout.Hint" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">16dp</item>
+        <item name="android:fontWeight">400</item>
     </style>
 </resources>

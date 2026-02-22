@@ -7,13 +7,18 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.factory
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.aza1rat.playlistmaker.db.data.AppDatabase
+import ru.aza1rat.playlistmaker.db.data.dao.PlaylistDao
+import ru.aza1rat.playlistmaker.db.data.dao.PlaylistTrackDao
 import ru.aza1rat.playlistmaker.db.data.dao.TrackDao
 import ru.aza1rat.playlistmaker.history.data.SharedPrefsStorageClient
 import ru.aza1rat.playlistmaker.history.data.StorageClient
+import ru.aza1rat.playlistmaker.playlist.data.AppFileStorageSaver
+import ru.aza1rat.playlistmaker.playlist.data.FileStorageSaver
 import ru.aza1rat.playlistmaker.search.data.NetworkClient
 import ru.aza1rat.playlistmaker.search.data.RetrofitNetworkClient
 import ru.aza1rat.playlistmaker.search.data.SearchAPI
@@ -66,8 +71,17 @@ val dataModule = module {
     single<TrackDao> {
         get<AppDatabase>().getTrackDao()
     }
+    single<PlaylistDao> {
+        get<AppDatabase>().getPlaylistDao()
+    }
+    single<PlaylistTrackDao> {
+        get<AppDatabase>().getPlaylistTrackDao()
+    }
 
     single<AppDatabase> {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db").build()
+    }
+    factory<FileStorageSaver> {
+        AppFileStorageSaver(androidContext())
     }
 }

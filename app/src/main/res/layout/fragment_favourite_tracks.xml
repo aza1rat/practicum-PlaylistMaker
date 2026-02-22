@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="?attr/colorPrimary">
+    android:background="?attr/colorMainBackground">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favourites"
@@ -23,7 +23,7 @@
         <ImageView style="@style/DayNightEmptyImageView" />
 
         <TextView
-            style="@style/SearchTextView"
+            style="@style/InfoHintTextView"
             android:layout_width="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/media_library_label_indent_top"

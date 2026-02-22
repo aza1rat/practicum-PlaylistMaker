@@ -21,15 +21,19 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        binding.bottomNavigation.setOnApplyWindowInsetsListener(null)
         val navController = this.getNavController(R.id.fragmentContainer)
         binding.bottomNavigation.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.playerFragment -> {
+                    setVisibilityToBottomNavigation(false)
+                }
+                R.id.createPlaylistFragment -> {
                     setVisibilityToBottomNavigation(false)
                 }
                 else -> {

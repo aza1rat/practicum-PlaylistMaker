@@ -53,7 +53,7 @@ class PlayerRepositoryImpl(
     }
 
     override suspend fun trackIsFavourite(trackId: Int): Boolean {
-        return trackDao.getTracksCountById(trackId) > 0
+        return trackDao.getFavouriteTracksCountById(trackId) > 0
     }
 
     private fun changeState(state: MediaPlayerState) {
