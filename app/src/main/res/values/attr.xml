@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="colorPlayButton" format="color"/>
+    <attr name="colorInputBorder" format="color"/>
+    <attr name="colorMainBackground" format="color"/>
 </resources>

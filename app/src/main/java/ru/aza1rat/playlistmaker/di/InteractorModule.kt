@@ -4,9 +4,13 @@ import org.koin.dsl.module
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryInteractor
 import ru.aza1rat.playlistmaker.history.domain.impl.SearchHistoryInteractorImpl
 import ru.aza1rat.playlistmaker.media_library.domain.api.FavouritesInteractor
+import ru.aza1rat.playlistmaker.media_library.domain.api.PlaylistTracksInteractor
 import ru.aza1rat.playlistmaker.media_library.domain.impl.FavouritesInteractorImpl
+import ru.aza1rat.playlistmaker.media_library.domain.impl.PlaylistTracksInteractorImpl
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.impl.PlayerInteractorImpl
+import ru.aza1rat.playlistmaker.playlist.domain.api.PlaylistInteractor
+import ru.aza1rat.playlistmaker.playlist.domain.impl.PlaylistInteractorImpl
 import ru.aza1rat.playlistmaker.search.domain.api.TrackInteractor
 import ru.aza1rat.playlistmaker.search.domain.impl.TrackInteractorImpl
 import ru.aza1rat.playlistmaker.settings.domain.ThemeInteractor
@@ -37,5 +41,12 @@ val interactorModule = module {
 
     factory<FavouritesInteractor> {
         FavouritesInteractorImpl(get())
+    }
+
+    factory<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
+    }
+    factory<PlaylistTracksInteractor> {
+        PlaylistTracksInteractorImpl(get())
     }
 }

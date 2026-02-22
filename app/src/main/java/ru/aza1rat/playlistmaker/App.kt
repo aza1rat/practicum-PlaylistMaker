@@ -7,6 +7,7 @@ import org.koin.java.KoinJavaComponent.getKoin
 import ru.aza1rat.playlistmaker.di.dataModule
 import ru.aza1rat.playlistmaker.di.interactorModule
 import ru.aza1rat.playlistmaker.di.repositoryModule
+import ru.aza1rat.playlistmaker.di.useCaseModule
 import ru.aza1rat.playlistmaker.di.viewModelModule
 import ru.aza1rat.playlistmaker.settings.data.BaseThemeControl
 
@@ -15,7 +16,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule, useCaseModule)
         }
         val themeControl: BaseThemeControl = getKoin().get()
         themeControl.setDarkTheme(themeControl.savedThemeIsDark())

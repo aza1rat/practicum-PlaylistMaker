@@ -10,20 +10,30 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.aza1rat.playlistmaker.media_library.domain.api.FavouritesInteractor
+import ru.aza1rat.playlistmaker.media_library.domain.api.PlaylistTracksInteractor
+import ru.aza1rat.playlistmaker.media_library.domain.model.PlaylistTracksCount
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerRepository
 import ru.aza1rat.playlistmaker.player.domain.model.MediaPlayerState
 import ru.aza1rat.playlistmaker.player.ui.model.PlayerState
+import ru.aza1rat.playlistmaker.player.ui.model.PlaylistSheetState
+import ru.aza1rat.playlistmaker.player.ui.model.TrackAddedToPlaylistEvent
 import ru.aza1rat.playlistmaker.search.domain.model.Track
+import ru.aza1rat.playlistmaker.util.ui.SingleLiveEvent
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val favouritesInteractor: FavouritesInteractor
+    private val favouritesInteractor: FavouritesInteractor,
+    private val playlistTracksInteractor: PlaylistTracksInteractor
 ) : ViewModel() {
     private val playerState = MutableLiveData<PlayerState>()
     fun observePlayerState(): LiveData<PlayerState> = playerState
+    private val playlistSheetState = MutableLiveData<PlaylistSheetState>()
+    fun observePlaylistSheetState(): LiveData<PlaylistSheetState> = playlistSheetState
+    private val trackAddedToPlaylistEvent = SingleLiveEvent<TrackAddedToPlaylistEvent>()
+    fun observeTrackAddedToPlaylistEvent(): LiveData<TrackAddedToPlaylistEvent> = trackAddedToPlaylistEvent
     private val progressFormatter = SimpleDateFormat("mm:ss", Locale.getDefault())
     private var progressPlaying: String = formatProgress(0)
     private var progressCheckJob: Job? = null
@@ -112,6 +122,27 @@ class PlayerViewModel(
         playerInteractor.pausePlayer()
     }
 
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistTracksInteractor.listPlaylistWithTracksCount().collect {
+                if (it.isEmpty())
+                    playlistSheetState.value = PlaylistSheetState.Empty
+                else
+                    playlistSheetState.value = PlaylistSheetState.Content(it)
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(track: Track, playlist: PlaylistTracksCount) {
+        viewModelScope.launch {
+            if (playlistTracksInteractor.addTrackToPlaylist(track, playlist.id))
+                trackAddedToPlaylistEvent.value = TrackAddedToPlaylistEvent.Added(playlist.name)
+            else
+                trackAddedToPlaylistEvent.value = TrackAddedToPlaylistEvent.AlreadyExists(playlist.name)
+        }
+
+    }
+
     override fun onCleared() {
         playerInteractor.release()
         super.onCleared()
@@ -128,6 +159,7 @@ class PlayerViewModel(
             }
         }
     }
+
 
     companion object {
         private const val PROGRESS_CHECK_DELAY = 300L

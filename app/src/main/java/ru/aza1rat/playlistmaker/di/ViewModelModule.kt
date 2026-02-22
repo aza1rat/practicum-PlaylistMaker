@@ -5,6 +5,7 @@ import org.koin.dsl.module
 import ru.aza1rat.playlistmaker.media_library.ui.view_model.FavouriteTracksViewModel
 import ru.aza1rat.playlistmaker.media_library.ui.view_model.PlaylistsViewModel
 import ru.aza1rat.playlistmaker.player.ui.view_model.PlayerViewModel
+import ru.aza1rat.playlistmaker.playlist.ui.view_model.CreatePlaylistViewModel
 import ru.aza1rat.playlistmaker.search.ui.view_model.SearchViewModel
 import ru.aza1rat.playlistmaker.settings.ui.view_model.SettingsViewModel
 
@@ -13,7 +14,7 @@ val viewModelModule = module {
         SearchViewModel(get(),get())
     }
     viewModel {
-        PlayerViewModel(get(),get())
+        PlayerViewModel(get(),get(), get())
     }
     viewModel {
         SettingsViewModel(get(), get())
@@ -22,6 +23,9 @@ val viewModelModule = module {
         FavouriteTracksViewModel(get())
     }
     viewModel {
-        PlaylistsViewModel()
+        PlaylistsViewModel(get())
+    }
+    viewModel {
+        CreatePlaylistViewModel(get(),get())
     }
 }

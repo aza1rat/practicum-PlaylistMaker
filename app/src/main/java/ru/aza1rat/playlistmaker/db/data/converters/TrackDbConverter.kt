@@ -4,7 +4,7 @@ import ru.aza1rat.playlistmaker.db.data.model.TrackDbModel
 import ru.aza1rat.playlistmaker.search.domain.model.Track
 
 class TrackDbConverter {
-    fun map(track: Track): TrackDbModel {
+    fun map(track: Track, isFavourite: Boolean): TrackDbModel {
         return TrackDbModel(
             track.trackId,
             track.trackName,
@@ -15,6 +15,7 @@ class TrackDbConverter {
             track.releaseYear,
             track.primaryGenreName,
             track.country,
+            isFavourite,
             track.previewUrl
         )
     }

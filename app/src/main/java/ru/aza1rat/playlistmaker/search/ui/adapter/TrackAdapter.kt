@@ -12,7 +12,7 @@ class TrackAdapter(private val onTrackClickListener: OnTrackClickListener? = nul
 
     var trackList: List<Track> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder = TrackViewHolder.Companion.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder = TrackViewHolder.from(parent)
 
     override fun onBindViewHolder(
         holder: TrackViewHolder,
