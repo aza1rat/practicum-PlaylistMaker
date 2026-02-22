@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import ru.aza1rat.playlistmaker.R
-import ru.aza1rat.playlistmaker.databinding.ItemPlaylistBinding
 import ru.aza1rat.playlistmaker.databinding.ItemSheetPlaylistBinding
 import ru.aza1rat.playlistmaker.media_library.domain.model.PlaylistTracksCount
 

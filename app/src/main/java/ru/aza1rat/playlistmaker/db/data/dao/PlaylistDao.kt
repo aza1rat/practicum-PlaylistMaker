@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import ru.aza1rat.playlistmaker.db.data.entity.PlaylistEntity
-import ru.aza1rat.playlistmaker.db.data.model.PlaylistTracksCountDbModel
 import ru.aza1rat.playlistmaker.db.data.model.PlaylistTracksDbModel
 
 @Dao

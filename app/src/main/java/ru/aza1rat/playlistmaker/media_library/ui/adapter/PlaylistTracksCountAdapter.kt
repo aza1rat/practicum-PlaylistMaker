@@ -1,6 +1,5 @@
 package ru.aza1rat.playlistmaker.media_library.ui.adapter
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.aza1rat.playlistmaker.media_library.domain.model.PlaylistTracksCount

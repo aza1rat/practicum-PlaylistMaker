@@ -3,7 +3,6 @@ package ru.aza1rat.playlistmaker.media_library.data
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.aza1rat.playlistmaker.db.data.converters.TrackDbConverter
-import ru.aza1rat.playlistmaker.db.data.dao.PlaylistDao
 import ru.aza1rat.playlistmaker.db.data.dao.PlaylistTrackDao
 import ru.aza1rat.playlistmaker.db.data.dao.TrackDao
 import ru.aza1rat.playlistmaker.db.data.entity.PlaylistTrackCrossRef
@@ -29,7 +28,7 @@ class PlaylistTracksRepositoryImpl(private val playlistTrackDao: PlaylistTrackDa
             )
             return result > 0L
         }
-        catch (e: Exception) {
+        catch (_: Exception) {
             return false
         }
     }

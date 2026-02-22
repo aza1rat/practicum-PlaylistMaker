@@ -9,9 +9,7 @@ import ru.aza1rat.playlistmaker.media_library.domain.impl.FavouritesInteractorIm
 import ru.aza1rat.playlistmaker.media_library.domain.impl.PlaylistTracksInteractorImpl
 import ru.aza1rat.playlistmaker.player.domain.api.PlayerInteractor
 import ru.aza1rat.playlistmaker.player.domain.impl.PlayerInteractorImpl
-import ru.aza1rat.playlistmaker.playlist.domain.api.CopyFileToStorageUseCase
 import ru.aza1rat.playlistmaker.playlist.domain.api.PlaylistInteractor
-import ru.aza1rat.playlistmaker.playlist.domain.impl.CopyFileToStorageUseCaseImpl
 import ru.aza1rat.playlistmaker.playlist.domain.impl.PlaylistInteractorImpl
 import ru.aza1rat.playlistmaker.search.domain.api.TrackInteractor
 import ru.aza1rat.playlistmaker.search.domain.impl.TrackInteractorImpl

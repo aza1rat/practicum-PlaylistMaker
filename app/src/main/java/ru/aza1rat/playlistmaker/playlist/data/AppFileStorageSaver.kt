@@ -1,15 +1,12 @@
 package ru.aza1rat.playlistmaker.playlist.data
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.core.net.toFile
 import androidx.core.net.toUri
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
 
 class AppFileStorageSaver(private val context: Context) : FileStorageSaver {
     override fun saveFile(fromFile: Uri): Uri? {
@@ -20,11 +17,12 @@ class AppFileStorageSaver(private val context: Context) : FileStorageSaver {
             val postfix = dir.listFiles()?.size ?: 0
             val outputFile = File(dir, "${FILE_NAME_PREFIX}${postfix}${FILE_EXTENSION}")
             val outputStream = FileOutputStream(outputFile)
-            BitmapFactory.decodeStream(inputStream).compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
+            BitmapFactory.decodeStream(inputStream)
+                .compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, outputStream)
             inputStream?.close()
             outputStream.close()
             return outputFile.toUri()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return null
         }
     }

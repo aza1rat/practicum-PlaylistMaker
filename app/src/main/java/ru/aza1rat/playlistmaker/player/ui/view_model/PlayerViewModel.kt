@@ -34,7 +34,6 @@ class PlayerViewModel(
     fun observePlaylistSheetState(): LiveData<PlaylistSheetState> = playlistSheetState
     private val trackAddedToPlaylistEvent = SingleLiveEvent<TrackAddedToPlaylistEvent>()
     fun observeTrackAddedToPlaylistEvent(): LiveData<TrackAddedToPlaylistEvent> = trackAddedToPlaylistEvent
-
     private val progressFormatter = SimpleDateFormat("mm:ss", Locale.getDefault())
     private var progressPlaying: String = formatProgress(0)
     private var progressCheckJob: Job? = null

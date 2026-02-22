@@ -1,6 +1,5 @@
 package ru.aza1rat.playlistmaker.playlist.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,7 +13,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -98,7 +96,8 @@ class CreatePlaylistFragment : Fragment() {
         }
         textWatcher?.let { binding.name.addTextChangedListener(it) }
         binding.name.onFocusChangeListener = createOnFocusChangeListener(binding.nameInputLayout)
-        binding.description.onFocusChangeListener = createOnFocusChangeListener(binding.descriptionInputLayout)
+        binding.description.onFocusChangeListener =
+            createOnFocusChangeListener(binding.descriptionInputLayout)
         binding.createPlaylist.setOnClickListener {
             viewModel.createPlaylist(
                 binding.name.text.toString(), binding.description.text.toString()
@@ -121,12 +120,18 @@ class CreatePlaylistFragment : Fragment() {
             val context = context ?: return@OnFocusChangeListener
             if (!hasFocus) {
                 if (!(view as TextInputEditText).text.isNullOrEmpty()) {
-                    inputLayout.defaultHintTextColor = ContextCompat.getColorStateList(context, R.color.create_playlist_hint_color)
+                    inputLayout.defaultHintTextColor =
+                        ContextCompat.getColorStateList(context, R.color.create_playlist_hint_color)
                 } else {
                     val typedValue = TypedValue()
                     activity?.let {
-                        it.theme.resolveAttribute(com.google.android.material.R.attr.colorOnPrimary, typedValue, true)
-                        inputLayout.defaultHintTextColor = ContextCompat.getColorStateList(context, typedValue.resourceId)
+                        it.theme.resolveAttribute(
+                            com.google.android.material.R.attr.colorOnPrimary,
+                            typedValue,
+                            true
+                        )
+                        inputLayout.defaultHintTextColor =
+                            ContextCompat.getColorStateList(context, typedValue.resourceId)
                     }
                 }
             }
@@ -137,7 +142,7 @@ class CreatePlaylistFragment : Fragment() {
         binding.back.setOnClickListener {
             performExit(alertDialog)
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackCallback)
     }
 
     private fun createOnExitDialog(): AlertDialog {
