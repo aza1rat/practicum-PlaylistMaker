@@ -2,6 +2,7 @@ package ru.aza1rat.playlistmaker.media_library.ui.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.aza1rat.playlistmaker.R
 import ru.aza1rat.playlistmaker.media_library.domain.model.PlaylistTracksCount
 import ru.aza1rat.playlistmaker.media_library.ui.view_holder.BasePlaylistTracksCountViewHolder
 import ru.aza1rat.playlistmaker.media_library.ui.view_holder.GridPlaylistTracksCountViewHolder
@@ -31,7 +32,9 @@ class PlaylistTracksCountAdapter(
         holder: BasePlaylistTracksCountViewHolder,
         position: Int
     ) {
-        holder.bind(playlists[position])
+        holder.bind(playlists[position],
+            holder.itemView.resources.getQuantityString(R.plurals.plural_track_count,
+                playlists[position].count, playlists[position].count))
         holder.itemView.setOnClickListener {
             onPlaylistClickListener?.onPlaylistClick(playlists[position])
         }

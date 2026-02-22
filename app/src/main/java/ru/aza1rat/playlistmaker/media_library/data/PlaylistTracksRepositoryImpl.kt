@@ -1,6 +1,7 @@
 package ru.aza1rat.playlistmaker.media_library.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.aza1rat.playlistmaker.db.data.converters.TrackDbConverter
 import ru.aza1rat.playlistmaker.db.data.dao.PlaylistTrackDao
@@ -13,7 +14,7 @@ import ru.aza1rat.playlistmaker.search.domain.model.Track
 class PlaylistTracksRepositoryImpl(private val playlistTrackDao: PlaylistTrackDao, private val trackDao: TrackDao, private val converter: TrackDbConverter) :
     PlaylistTracksRepository {
     override fun listPlaylistWithTracksCount(): Flow<List<PlaylistTracksCount>> {
-        return playlistTrackDao.getPlaylistsTracksCount().map { playlistTracksDbList ->
+        return playlistTrackDao.getPlaylistsTracksCount().distinctUntilChanged().map { playlistTracksDbList ->
             playlistTracksDbList.map { playlistTracksDb ->
                 PlaylistTracksCountMapper.map(playlistTracksDb)
             }

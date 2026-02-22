@@ -242,6 +242,13 @@
 
     </ScrollView>
 
+    <View
+        android:id="@+id/dim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/sheet_dim"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/playlistSheet"
         android:layout_width="match_parent"

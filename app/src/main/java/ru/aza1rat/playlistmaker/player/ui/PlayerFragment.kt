@@ -32,6 +32,7 @@ class PlayerFragment : Fragment() {
     private val playerViewModel: PlayerViewModel by viewModel<PlayerViewModel>()
     private var playlistBottomSheetBehavior: BottomSheetBehavior<LinearLayout>? = null
     private lateinit var playlistTracksCountAdapter: PlaylistTracksCountAdapter
+    private var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -62,6 +63,8 @@ class PlayerFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        bottomSheetCallback?.let { playlistBottomSheetBehavior?.removeBottomSheetCallback(it) }
+        bottomSheetCallback = null
         binding.playlistsRecycler.adapter = null
         playlistBottomSheetBehavior = null
         _binding = null
@@ -173,6 +176,19 @@ class PlayerFragment : Fragment() {
         binding.newPlaylist.setOnClickListener {
             requireActivity().getNavController(R.id.fragmentContainer).navigate(R.id.action_playerFragment_to_createPlaylistFragment)
         }
+        bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    binding.dim.visibility = View.GONE
+                } else {
+                    binding.dim.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        }
+        bottomSheetCallback?.let { playlistBottomSheetBehavior?.addBottomSheetCallback(it) }
     }
 
 
