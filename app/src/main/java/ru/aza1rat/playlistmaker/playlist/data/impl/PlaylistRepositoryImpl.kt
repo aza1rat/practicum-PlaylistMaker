@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import ru.aza1rat.playlistmaker.db.data.converters.PlaylistEntityConverter
 import ru.aza1rat.playlistmaker.db.data.dao.PlaylistDao
-import ru.aza1rat.playlistmaker.media_library.ui.adapter.PlaylistTracksCountAdapter
 import ru.aza1rat.playlistmaker.playlist.domain.api.PlaylistRepository
 import ru.aza1rat.playlistmaker.playlist.domain.model.Playlist
 
