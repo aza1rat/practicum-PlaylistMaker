@@ -11,13 +11,13 @@ import ru.aza1rat.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.aza1rat.playlistmaker.media_library.ui.adapter.PlaylistTracksCountAdapter
 import ru.aza1rat.playlistmaker.media_library.ui.model.PlaylistState
 import ru.aza1rat.playlistmaker.media_library.ui.view_model.PlaylistsViewModel
+import ru.aza1rat.playlistmaker.playlist.ui.PlaylistFragment
 import ru.aza1rat.playlistmaker.util.ui.getNavController
 import ru.aza1rat.playlistmaker.util.ui.showMainView
 
 class PlaylistsFragment : Fragment() {
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-
     private var _showContent: ((View?) -> Unit)? = null
     private val showContent get() = _showContent!!
     private val viewModel: PlaylistsViewModel by viewModel()
@@ -39,7 +39,12 @@ class PlaylistsFragment : Fragment() {
                 R.id.action_mediaLibraryFragment_to_createPlaylistFragment
             )
         }
-        val adapter = PlaylistTracksCountAdapter(PlaylistTracksCountAdapter.ViewType.PLAYLIST_GRID_ITEM)
+        val adapter =
+            PlaylistTracksCountAdapter(PlaylistTracksCountAdapter.ViewType.PLAYLIST_GRID_ITEM) {
+                requireActivity().getNavController(R.id.fragmentContainer)
+                    .navigate(R.id.action_mediaLibraryFragment_to_playlistFragment,
+                        PlaylistFragment.createArgs(it.id))
+            }
         binding.playlists.adapter = adapter
         viewModel.observePlaylistState().observe(viewLifecycleOwner) {
             when (it) {
@@ -48,6 +53,7 @@ class PlaylistsFragment : Fragment() {
                     adapter.notifyDataSetChanged()
                     showContent.invoke(binding.playlists)
                 }
+
                 is PlaylistState.Empty -> {
                     showContent.invoke(binding.emptyPlaylists)
                 }

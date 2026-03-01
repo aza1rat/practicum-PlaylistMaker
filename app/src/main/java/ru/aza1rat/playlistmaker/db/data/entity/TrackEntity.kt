@@ -11,6 +11,8 @@ data class TrackEntity (
     val name: String,
     val artist: String,
     val time: String,
+    @ColumnInfo(name = "time_millis")
+    val timeMillis: Long,
     @ColumnInfo(name = "artwork_url")
     val artworkUrl100: String,
     val collection: String?,

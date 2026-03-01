@@ -10,6 +10,7 @@ object TrackUIMapper {
             trackName = trackUI.trackName,
             artistName = trackUI.artistName,
             trackTime = trackUI.trackTime,
+            trackTimeMillis = trackUI.trackTimeMillis,
             artworkUrl100 = trackUI.artworkUrl100,
             collectionName = trackUI.collectionName,
             releaseYear = trackUI.releaseYear,

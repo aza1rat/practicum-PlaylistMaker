@@ -24,7 +24,7 @@
     <dimen name="search_track_info_text_size">11sp</dimen>
     <dimen name="search_track_info_dot_size">13dp</dimen>
     <dimen name="search_track_inner_indent_horizontal">12dp</dimen>
-    <dimen name="search_track_inner_indent_vertical">8dp</dimen>
+    <dimen name="track_inner_indent_vertical">8dp</dimen>
     <dimen name="search_refresh_padding">6dp</dimen>
     <dimen name="search_illustration_size">120dp</dimen>
     <dimen name="search_space">24dp</dimen>
@@ -50,4 +50,7 @@
     <dimen name="playlist_input_padding_horizontal">16dp</dimen>
     <dimen name="playlist_input_padding_top">18dp</dimen>
     <dimen name="playlist_input_padding_bottom">19dp</dimen>
+    <dimen name="playlist_inner_indent_vertical">8dp</dimen>
+    <dimen name="playlist_sheet_current_start">53dp</dimen>
+    <dimen name="playlist_sheet_indent">16dp</dimen>
 </resources>

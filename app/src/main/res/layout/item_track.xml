@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/search_track_inner_indent_horizontal"
-    android:paddingVertical="@dimen/search_track_inner_indent_vertical"
+    android:paddingVertical="@dimen/track_inner_indent_vertical"
     android:clickable="true">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -26,6 +26,8 @@
         android:layout_marginEnd="@dimen/search_track_text_end_indent"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="@dimen/regular_text_size"
+        android:maxLines="1"
+        android:ellipsize="end"
         tools:text="Here Comes The Sun (Remastered ver)" />
 
     <LinearLayout
@@ -42,7 +44,9 @@
             android:layout_width="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
-            tools:text="The Beatles_________________________________________________________" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="The Beatles______________________________________________________________" />
 
         <ImageView
             style="@style/DayNightTint"
@@ -54,6 +58,8 @@
         <TextView
             android:id="@+id/trackTime"
             style="@style/SearchTrackTextView"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:layout_gravity="end"
             tools:text="4:01" />
 

@@ -16,7 +16,7 @@ import ru.aza1rat.playlistmaker.search.ui.mapper.TrackMapper
 import ru.aza1rat.playlistmaker.util.ui.getNavController
 import ru.aza1rat.playlistmaker.util.ui.showMainView
 
-class FavouriteTracksFragment: Fragment() {
+class FavouriteTracksFragment : Fragment() {
     private val favouriteTracksViewModel: FavouriteTracksViewModel by viewModel<FavouriteTracksViewModel>()
     private lateinit var favouritesAdapter: TrackAdapter
     private var _binding: FragmentFavouriteTracksBinding? = null
@@ -26,9 +26,7 @@ class FavouriteTracksFragment: Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavouriteTracksBinding.inflate(inflater, container, false)
         return binding.root
@@ -36,7 +34,7 @@ class FavouriteTracksFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _showContent = showMainView(binding.favourites,binding.emptyLibrary)
+        _showContent = showMainView(binding.favourites, binding.emptyLibrary)
         setupAdapter()
         attachObserver()
         favouriteTracksViewModel.getFavourites()
@@ -50,20 +48,22 @@ class FavouriteTracksFragment: Fragment() {
     }
 
     private fun setupAdapter() {
-        favouritesAdapter = TrackAdapter { track ->
+        favouritesAdapter = TrackAdapter(onTrackClickListener = { track ->
             requireActivity().getNavController(R.id.fragmentContainer).navigate(
                 R.id.action_mediaLibraryFragment_to_playerFragment,
                 PlayerFragment.createArgs(TrackMapper.mapToTrackParcelable(track))
             )
-        }
+        })
         binding.favourites.adapter = favouritesAdapter
     }
+
     private fun attachObserver() {
         favouriteTracksViewModel.observeFavouritesState().observe(viewLifecycleOwner) {
             when (it) {
                 is FavouritesState.Empty -> {
                     showContent.invoke(binding.emptyLibrary)
                 }
+
                 is FavouritesState.FavouritesContent -> {
                     favouritesAdapter.trackList = it.favourites
                     favouritesAdapter.notifyDataSetChanged()

@@ -8,18 +8,18 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.aza1rat.playlistmaker.playlist.domain.api.CopyFileToStorageUseCase
 import ru.aza1rat.playlistmaker.playlist.domain.api.PlaylistInteractor
-import ru.aza1rat.playlistmaker.playlist.domain.model.Playlist
 import ru.aza1rat.playlistmaker.playlist.ui.model.CreatePlaylistState
+import ru.aza1rat.playlistmaker.playlist.ui.api.InputPlaylistViewModel
 
 class CreatePlaylistViewModel(
     private val copyFileToStorageUseCase: CopyFileToStorageUseCase,
     private val playlistInteractor: PlaylistInteractor
-) : ViewModel() {
+) : ViewModel(), InputPlaylistViewModel {
     private val playlistState = MutableLiveData<CreatePlaylistState>()
-    fun observePlaylistState(): LiveData<CreatePlaylistState> = playlistState
+    override fun observePlaylistState(): LiveData<CreatePlaylistState> = playlistState
     private var imageUri: Uri? = null
 
-    fun imageUriObtained(uri: Uri) {
+    override fun imageUriObtained(uri: Uri) {
         imageUri = uri
         playlistState.value = CreatePlaylistState.Content(uri)
     }
@@ -33,7 +33,7 @@ class CreatePlaylistViewModel(
         }
         viewModelScope.launch {
             playlistInteractor.addPlaylist(
-                Playlist(name, description.ifEmpty { null }, savedFileUri)
+                name, description.ifEmpty { null }, savedFileUri
             )
             playlistState.value = CreatePlaylistState.Created(name)
         }

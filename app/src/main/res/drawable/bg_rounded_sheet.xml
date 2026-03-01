@@ -10,7 +10,7 @@
     <item android:top="8dp" android:width="50dp" android:height="4dp" android:gravity="center_horizontal">
         <shape android:shape="rectangle" >
             <corners android:radius="44dp"/>
-            <solid android:color="@color/text_gray"/>
+            <solid android:color="?attr/colorInputBorder"/>
         </shape>
     </item>
 </layer-list>

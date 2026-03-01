@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import ru.aza1rat.playlistmaker.db.data.entity.PlaylistEntity
-import ru.aza1rat.playlistmaker.db.data.model.PlaylistTracksDbModel
 
 @Dao
 interface PlaylistDao {
@@ -17,9 +16,11 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist")
     fun getPlaylists(): Flow<List<PlaylistEntity>>
 
-    @Transaction
     @Query("SELECT * FROM playlist WHERE playlist_id = :playlistId")
-    suspend fun getPlaylistWithTracks(playlistId: Int): PlaylistTracksDbModel
+    suspend fun getPlaylistById(playlistId: Int): PlaylistEntity
+
+    @Query("UPDATE playlist SET name = :updateName, description = :updateDescription, cover_path = :updateCover WHERE playlist_id = :currentPlaylistId")
+    suspend fun updatePlaylist(currentPlaylistId: Int, updateName: String, updateDescription: String?, updateCover: String?)
 
     @Query("DELETE FROM track WHERE track.favourite = 0 AND NOT EXISTS (SELECT 1 FROM playlist_track WHERE track.track_id = playlist_track.track_id)")
     suspend fun deleteUnfavouriteNonPlaylistTracks()

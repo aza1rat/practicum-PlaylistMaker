@@ -174,7 +174,8 @@ class PlayerFragment : Fragment() {
             playlistBottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         binding.newPlaylist.setOnClickListener {
-            requireActivity().getNavController(R.id.fragmentContainer).navigate(R.id.action_playerFragment_to_createPlaylistFragment)
+            requireActivity().getNavController(R.id.fragmentContainer)
+                .navigate(R.id.action_playerFragment_to_createPlaylistFragment)
         }
         bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {

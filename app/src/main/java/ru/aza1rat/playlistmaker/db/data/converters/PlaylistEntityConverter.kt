@@ -7,6 +7,7 @@ import ru.aza1rat.playlistmaker.playlist.domain.model.Playlist
 class PlaylistEntityConverter {
     fun map(playlist: PlaylistEntity): Playlist {
         return Playlist(
+            playlist.id,
             playlist.name,
             playlist.description,
             playlist.coverPath?.toUri()

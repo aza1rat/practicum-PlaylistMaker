@@ -6,6 +6,8 @@ import ru.aza1rat.playlistmaker.media_library.ui.view_model.FavouriteTracksViewM
 import ru.aza1rat.playlistmaker.media_library.ui.view_model.PlaylistsViewModel
 import ru.aza1rat.playlistmaker.player.ui.view_model.PlayerViewModel
 import ru.aza1rat.playlistmaker.playlist.ui.view_model.CreatePlaylistViewModel
+import ru.aza1rat.playlistmaker.playlist.ui.view_model.PlaylistViewModel
+import ru.aza1rat.playlistmaker.playlist.ui.view_model.UpdatePlaylistViewModel
 import ru.aza1rat.playlistmaker.search.ui.view_model.SearchViewModel
 import ru.aza1rat.playlistmaker.settings.ui.view_model.SettingsViewModel
 
@@ -27,5 +29,11 @@ val viewModelModule = module {
     }
     viewModel {
         CreatePlaylistViewModel(get(),get())
+    }
+    viewModel {
+        PlaylistViewModel(get(),get(), get())
+    }
+    viewModel {
+        UpdatePlaylistViewModel(get(), get())
     }
 }
