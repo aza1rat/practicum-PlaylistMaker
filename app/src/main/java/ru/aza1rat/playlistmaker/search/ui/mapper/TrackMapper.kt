@@ -10,6 +10,7 @@ object TrackMapper {
             trackName = track.trackName,
             artistName = track.artistName,
             trackTime = track.trackTime,
+            trackTimeMillis = track.trackTimeMillis,
             artworkUrl100 = track.artworkUrl100,
             collectionName = track.collectionName,
             releaseYear = track.releaseYear,

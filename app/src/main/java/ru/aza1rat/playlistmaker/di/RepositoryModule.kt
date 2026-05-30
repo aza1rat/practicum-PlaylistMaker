@@ -3,6 +3,7 @@ package ru.aza1rat.playlistmaker.di
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.aza1rat.playlistmaker.db.data.converters.PlaylistEntityConverter
+import ru.aza1rat.playlistmaker.db.data.converters.PlaylistTracksConverter
 import ru.aza1rat.playlistmaker.db.data.converters.TrackDbConverter
 import ru.aza1rat.playlistmaker.history.data.impl.SearchHistoryRepositoryImpl
 import ru.aza1rat.playlistmaker.history.domain.api.SearchHistoryRepository
@@ -60,7 +61,10 @@ val repositoryModule = module {
     factory {
         PlaylistEntityConverter()
     }
+    factory {
+        PlaylistTracksConverter(get(), get())
+    }
     factory<PlaylistTracksRepository> {
-        PlaylistTracksRepositoryImpl(get(),get(),get())
+        PlaylistTracksRepositoryImpl(get(),get(),get(),get(), get())
     }
 }

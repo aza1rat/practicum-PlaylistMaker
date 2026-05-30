@@ -41,6 +41,18 @@
     <string name="param_playlist_created">Плейлист %1$s создан</string>
     <string name="player_sheet_title">Добавить в плейлист</string>
     <string name="playlist_creation">Новый плейлист</string>
+    <string name="share_playlist_empty_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="update_playlist">Редактировать плейлист</string>
+    <string name="save">Сохранить</string>
+    <string name="playlist_remove_track_dialog_title">Хотите удалить трек?</string>
+    <string name="no">НЕТ</string>
+    <string name="yes">ДА</string>
+    <string name="playlist_remove_dialog_title">Удалить плейлист</string>
+    <string name="playlist_remove_dialog_message">Вы уверены, что хотите удалить этот плейлист?</string>
+    <string name="playlist_empty_tracks">В этом плейлисте нет треков</string>
+    <string name="delete">Удалить</string>
+    <string name="share">Поделиться</string>
+    <string name="playlist_sheet_edit_info">Редактировать информацию</string>
     <plurals name="plural_track_count">
         <item quantity="zero">%1$d треков</item>
         <item quantity="one">%1$d трек</item>
@@ -48,5 +60,13 @@
         <item quantity="few">%1$d трека</item>
         <item quantity="many">%1$d треков</item>
         <item quantity="other">%1$d треков</item>
+    </plurals>
+    <plurals name="plural_minute_count">
+        <item quantity="zero">%1$s минут</item>
+        <item quantity="one">%1$s минута</item>
+        <item quantity="two">%1$s минуты</item>
+        <item quantity="few">%1$s минуты</item>
+        <item quantity="many">%1$s минут</item>
+        <item quantity="other">%1$s минут</item>
     </plurals>
 </resources>

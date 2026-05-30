@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorMainBackground"
-    tools:context=".playlist.ui.CreatePlaylistFragment">
+    tools:context=".playlist.ui.api.BaseInputPlaylistFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start24Line"
@@ -45,6 +45,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/header"
         style="@style/HeaderTextView"
         android:layout_marginStart="@dimen/header_inner_indent"
         android:layout_marginTop="@dimen/header_outer_indent"

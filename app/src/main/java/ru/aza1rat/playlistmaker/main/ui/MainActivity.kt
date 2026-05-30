@@ -36,6 +36,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.createPlaylistFragment -> {
                     setVisibilityToBottomNavigation(false)
                 }
+                R.id.updatePlaylistFragment -> {
+                    setVisibilityToBottomNavigation(false)
+                }
+                R.id.playlistFragment -> {
+                    setVisibilityToBottomNavigation(false)
+                }
                 else -> {
                     setVisibilityToBottomNavigation(true)
                 }

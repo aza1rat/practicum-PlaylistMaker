@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_mediaLibraryFragment_to_createPlaylistFragment"
             app:destination="@id/createPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -44,4 +47,20 @@
         android:name="ru.aza1rat.playlistmaker.playlist.ui.CreatePlaylistFragment"
         android:label="fragment_create_playlist"
         tools:layout="@layout/fragment_create_playlist" />
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="ru.aza1rat.playlistmaker.playlist.ui.PlaylistFragment"
+        android:label="PlaylistFragment"
+        tools:layout="@layout/fragment_playlist">
+        <action
+            android:id="@+id/action_playlistFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_playlistFragment_to_updatePlaylistFragment"
+            app:destination="@id/updatePlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updatePlaylistFragment"
+        android:name="ru.aza1rat.playlistmaker.playlist.ui.UpdatePlaylistFragment"
+        android:label="UpdatePlaylistFragment" />
 </navigation>

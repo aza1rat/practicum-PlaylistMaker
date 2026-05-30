@@ -15,6 +15,7 @@ object TrackDtoMapper {
             trackName = trackDto.trackName,
             artistName = trackDto.artistName,
             trackTime = formatTrackTime(trackDto.trackTime),
+            trackTimeMillis = trackDto.trackTime,
             artworkUrl100 = trackDto.artworkUrl100,
             collectionName = trackDto.collectionName,
             releaseYear = getReleaseYear(trackDto.releaseDate),
